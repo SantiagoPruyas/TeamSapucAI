@@ -1498,9 +1498,9 @@ Se llena **al cerrar cada sesión**, sin excepción. Es cómo la otra sabe qué 
 | # | Sesión | Quién | Rama | Skill que usó | Estado | Evidencia | Notas / hallazgos |
 |---|---|---|---|---|---|---|---|
 | S0I | Credenciales, salud y deploy | Santi | `feat/ia/entorno` | `security-review` | 🟨 | `docs/back/ia/S0-entorno/notas.md` | `/api/dev/salud` ok (Gemini verde, VB-4/5/6 pasan). Pivot de proveedor: el equipo no tiene acceso a Bedrock, Gemini pasa a hacer las 6 tareas de IA (ver §2). Bloqueada en: AWS Amplify Hosting (acción de consola del usuario). Corregido bug de plan: `_dev` → `dev` (Next.js no rutea carpetas `_private`), ver §14. |
-| S0D | Proyecto Supabase y esquema | Agos | `feat/datos/esquema-en-papel` | | ⬜ | | |
-| S1I | Clientes de IA y runner JSON | Santi | `feat/ia/clientes` | | ⬜ | | |
-| S1D | Esquema, migraciones y seed | Agos | `feat/datos/esquema` | | ⬜ | | |
+| S0D | Proyecto Supabase y esquema | Agos | `feat/datos/esquema-en-papel` | | 🟨 | `supabase/ESQUEMA.md` | A Agos se le rompió la compu. Dejó `ESQUEMA.md` (esquema base) y `supabase/config.toml`, pero sin las 4 preguntas del paso 4 respondidas por escrito ni la pregunta del RDS (PROJECT.md §7). Las respuestas ya estaban decididas en el propio texto del plan (§0D paso 4), así que S1D siguió adelante con esas decisiones. Falta que Agos las vuelque a `ESQUEMA.md` cuando pueda. |
+| S1I | Clientes de IA y runner JSON | Santi | `feat/ia/clientes` | `superpowers:test-driven-development` | ✅ | `docs/back/ia/S1-clientes/notas.md` | `json.ts` con TDD (5/5 tests). Probado con Gemini real y con credenciales rotas (VB-4 limpio). Bug propio encontrado y corregido: la ruta dev llamaba a `generarTexto` sin atrapar su excepción y daba 500 con la key rota. |
+| S1D | Esquema, migraciones y seed | Agos | `feat/datos/esquema` | | 🟨 | `docs/back/datos/S1-esquema/notas.md` | **Ejecutada por Santi cubriendo el carril DATOS** (Agos sin máquina). Migraciones 0001-0006 + seed corren limpio contra Postgres local (Docker) dos veces. RLS queda deshabilitada a propósito (es tarea de S2D). Falta: proyecto Supabase cloud real (nadie lo creó todavía, ver S0D) y revisión cruzada de Agos cuando vuelva — por eso queda 🟨 y no ✅. |
 | S2I | Prompts 1 y 2 | Santi | `feat/ia/resumir-categorizar` | | ⬜ | | |
 | S2D | Auth, perfiles y RLS | Agos | `feat/datos/auth-y-rls` | | ⬜ | | |
 | S3I | Carga de propuesta | Santi | `feat/ia/carga-propuesta` | | ⬜ | | |
@@ -1530,6 +1530,8 @@ imposibles a las 4 de la mañana.
 | | Santi | Falta el tipo `RespuestaChat` en `lib/types.ts` (§5.2) | Malen (front) | abierto |
 | | Agos | Preguntar a la organización si el RDS es obligatorio (PROJECT.md §7) | Agos | abierto |
 | 2026-08-01 | Santi | `app/api/_dev/**` no rutea: Next.js App Router trata cualquier carpeta con prefijo `_` como "private folder" (no ruteable). Confirmado probando `app/api/devtest/salud` (200) vs `app/api/_dev/salud` (404). Se renombró la convención a `app/api/dev/**` en todo PLAN-BACK.md (sed global) y se movió `app/api/_dev/salud/route.ts` a `app/api/dev/salud/route.ts` | Nadie más — ya corregido en este commit. Avisar a Agos antes de que arranque S1D para que use `app/api/dev/**` desde el principio | cerrado |
+| 2026-08-01 | Santi | **A Agos se le rompió la computadora.** Para no perder tiempo, Santi ejecutó S1D (carril DATOS) además de S1I (el suyo), sobre la rama `feat/datos/esquema`, siguiendo el plan al pie de la letra. Incluye un merge puntual de `lib/types.ts` y `lib/mock/**` desde `origin/front` (necesario para que `_contrato.ts` compile), tal como permite §4 para cambios puntuales de `lib/types.ts`. | Agos: revisar S1D como código propio en cuanto tenga máquina (VB-8, revisión cruzada pendiente) | abierto |
+| 2026-08-01 | Santi | El seed original (según el plan) preveía ~40 sapucais usando solo 2 usuarios de prueba. La restricción `unique(proposal_id, user_id)` de `sapucais` (una persona, una voz por propuesta) lo hace imposible con tan pocos usuarios. Se agregaron 12 ciudadanos de relleno al seed para poder simular volumen real. | Nadie — ya resuelto | cerrado |
 | | | | | |
 
 ---
