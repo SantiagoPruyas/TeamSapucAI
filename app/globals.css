@@ -1,0 +1,291 @@
+@import "tailwindcss";
+
+/* ============================================================
+   SAPUCAÍ — DESIGN SYSTEM TOKENS
+   Dirección visual: "El Puente" — reemplaza a "El Estandarte" el 2026-08-01
+   a partir de public/prototype.jpeg. Ver DESIGN.md y PROJECT.md §15.
+   Los NOMBRES de variable se mantuvieron por compatibilidad con código ya
+   escrito; los VALORES y su rol de marca cambiaron. No editar sin acuerdo
+   del equipo — es la misma regla de congelamiento que antes, aplicada a
+   la dirección nueva.
+   ============================================================ */
+
+:root {
+  /* --- Azules de marca --- */
+  --indigo-campo: #1B2A5E;       /* azul primario: wordmark, botón sólido, títulos */
+  --indigo-nocturno: #14204A;    /* variante más oscura: panel del diputado, pie del degradé */
+  --azul-cielo: #4FA3E3;         /* extremo claro del degradé del arco */
+
+  /* --- Acento (reemplaza el rol que tenía el oro) --- */
+  --oro-filete: #2E7FD6;
+
+  /* --- Tintas de postura (solo para datos, nunca fondo) — sin cambios --- */
+  --verde-bandera: #1E6B45;
+  --cochinilla: #A82418;
+  --gris-pizarra: #77808F;
+
+  /* --- Neutros de superficie --- */
+  --lienzo: #F5F9FF;
+  --lienzo-hueso: #FFFFFF;
+  --tinta: #16233D;
+  --tinta-tenue: #5B6B85;
+  --hilo: #E3E9F2;
+  --blanco-cosido: #FFFFFF;
+
+  /* --- Sombra (nueva: antes prohibida en El Estandarte) --- */
+  --sombra-suave: 0 8px 24px rgba(27, 42, 94, 0.14);
+  --sombra-boton: 0 4px 14px rgba(27, 42, 94, 0.22);
+
+  /* --- Motion tokens (nombres sin cambios, siguen en uso) --- */
+  --ease-tela: cubic-bezier(.2, .8, .2, 1);
+  --dur-atar: 320ms;
+  --dur-sello: 420ms;
+  --dur-fade: 200ms;
+
+  /* --- Radius --- */
+  --radius-base: 20px;
+  --radius-pill: 999px;
+
+  /* --- Shadcn semantic (preservado) --- */
+  --background: var(--indigo-nocturno);
+  --foreground: var(--blanco-cosido);
+  --card: var(--indigo-campo);
+  --card-foreground: var(--blanco-cosido);
+  --popover: var(--indigo-nocturno);
+  --popover-foreground: var(--blanco-cosido);
+  --primary: var(--blanco-cosido);
+  --primary-foreground: var(--indigo-nocturno);
+  --secondary: var(--indigo-campo);
+  --secondary-foreground: var(--blanco-cosido);
+  --muted: #1a2540;
+  --muted-foreground: var(--gris-pizarra);
+  --accent: var(--oro-filete);
+  --accent-foreground: var(--indigo-nocturno);
+  --destructive: var(--cochinilla);
+  --destructive-foreground: var(--blanco-cosido);
+  --border: rgba(46, 127, 214, 0.2);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: var(--oro-filete);
+  --radius: 16px;
+}
+
+@theme inline {
+  /* Colores directos */
+  --color-indigo-campo: var(--indigo-campo);
+  --color-indigo-nocturno: var(--indigo-nocturno);
+  --color-oro-filete: var(--oro-filete);
+  --color-verde-bandera: var(--verde-bandera);
+  --color-cochinilla: var(--cochinilla);
+  --color-gris-pizarra: var(--gris-pizarra);
+  --color-lienzo: var(--lienzo);
+  --color-lienzo-hueso: var(--lienzo-hueso);
+  --color-tinta: var(--tinta);
+  --color-tinta-tenue: var(--tinta-tenue);
+  --color-hilo: var(--hilo);
+  --color-blanco-cosido: var(--blanco-cosido);
+
+  /* Semánticos para shadcn */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Tipografía */
+  --font-sans: var(--font-body, system-ui, sans-serif);
+  --font-display: var(--font-display, system-ui, sans-serif);
+
+  /* Radio */
+  --radius-base: var(--radius-base);
+  --radius-pill: var(--radius-pill);
+  --radius-lg: var(--radius-base);
+  --radius-md: 16px;
+  --radius-sm: 12px;
+
+  /* Marca */
+  --color-azul-cielo: var(--azul-cielo);
+
+  /* Motion */
+  --ease-tela: var(--ease-tela);
+  --dur-atar: var(--dur-atar);
+  --dur-sello: var(--dur-sello);
+  --dur-fade: var(--dur-fade);
+}
+
+/* ============================================================
+   ROLES TIPOGRÁFICOS
+   Nadie escribe tamaños a mano; usa estas clases.
+   ============================================================ */
+
+@layer utilities {
+  /* Display — Archivo 700 condensada, un único grito por pantalla */
+  .t-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-variation-settings: 'wdth' 75;
+    font-size: clamp(2rem, 9vw, 3.5rem);
+    line-height: 0.95;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* Headline — Archivo 600, títulos de sección y estandartes en el feed */
+  .t-headline {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-variation-settings: 'wdth' 85;
+    font-size: 1.5rem;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+  }
+
+  /* Title — Libre Franklin 600, títulos dentro de paneles de lienzo */
+  .t-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    line-height: 1.35;
+  }
+
+  /* Body — Libre Franklin 400, texto de lectura; mínimo 16px en el ciudadano */
+  .t-body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-ch: 68;
+  }
+
+  /* Label — Archivo 600 caps, insignias y etiquetas cortas */
+  .t-label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* Data — Libre Franklin 600 tabular, números que cambian o se comparan */
+  .t-data {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Panel de lienzo: borde cosido a la izquierda ---- */
+  /* Sigue en uso tal cual en el panel del diputado (fondo oscuro, sin sombra).
+     En el carril ciudadano preferí `.tarjeta-blanca` para el look flotante nuevo. */
+  .panel-lienzo {
+    background-color: var(--lienzo);
+    color: var(--tinta);
+    border-left: 3px solid var(--indigo-campo);
+    border-radius: var(--radius-base);
+    padding: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .panel-lienzo {
+      padding: 1.5rem;
+    }
+  }
+
+  /* ---- Tarjeta blanca flotante: el contenedor por defecto de "El Puente" ---- */
+  .tarjeta-blanca {
+    background-color: var(--lienzo-hueso);
+    color: var(--tinta);
+    border-radius: var(--radius-base);
+    box-shadow: var(--sombra-suave);
+    padding: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .tarjeta-blanca {
+      padding: 1.5rem;
+    }
+  }
+
+  /* ---- Utilidades de sombra ---- */
+  .sombra-suave { box-shadow: var(--sombra-suave); }
+  .sombra-boton { box-shadow: var(--sombra-boton); }
+
+  /* ---- Degradé del arco (isotipo y momentos de marca) ---- */
+  .gradiente-arco {
+    background: linear-gradient(135deg, var(--azul-cielo), var(--indigo-campo));
+  }
+
+  /* ---- Banda de izada: 8px + dos ojales ---- */
+  /* Motivo de "El Estandarte", dirección anterior. Se deja sin uso activo bajo
+     "El Puente" — no se borra por si algún componente viejo todavía la referencia. */
+  .banda-izada {
+    height: 8px;
+    background-color: var(--indigo-nocturno);
+    border-bottom: 1px solid var(--oro-filete);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .banda-izada::before,
+  .banda-izada::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: var(--oro-filete);
+  }
+
+  .banda-izada::before { left: 24px; }
+  .banda-izada::after  { left: 36px; }
+
+  /* ---- Aro de foco (oro filete, 1px) ---- */
+  .focus-visible\:ring-oro:focus-visible {
+    outline: 1px solid var(--oro-filete);
+    outline-offset: 2px;
+  }
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Fondo blanco por defecto — el panel del diputado pisa esto con su propio
+     fondo oscuro a nivel de página, sin cambios respecto a la dirección anterior. */
+  body {
+    background-color: var(--lienzo-hueso);
+    color: var(--tinta);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Focus ring global — celeste acento */
+  :focus-visible {
+    outline: 1px solid var(--oro-filete);
+    outline-offset: 2px;
+  }
+
+  /* Línea dura sin blur para separar la barra fija de acción del contenido */
+  .shadow-barra-fija {
+    box-shadow: 0 -1px 0 var(--hilo) !important;
+  }
+}
