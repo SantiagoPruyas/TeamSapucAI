@@ -191,7 +191,7 @@ export default function Grabador({ onEnviar }: Props) {
     <div className="w-full flex flex-col items-center">
       <div className="relative w-64 h-64 flex items-center justify-center mb-8">
         <div
-          className={`absolute inset-0 border-[3px] border-indigo-campo rounded-full ${grabando ? 'animate-ping opacity-20' : ''}`}
+          className={`absolute inset-0 border-[3px] border-indigo-campo rounded-full pointer-events-none ${grabando ? 'animate-ping opacity-20' : ''}`}
         />
         <button
           onPointerDown={handlePointerDown}

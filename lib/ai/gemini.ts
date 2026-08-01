@@ -8,7 +8,7 @@
 
 import { GoogleGenAI } from '@google/genai'
 
-const MODEL_ID = process.env.GEMINI_MODEL_ID || 'gemini-2.5-flash'
+const MODEL_ID = process.env.GEMINI_MODEL_ID || 'gemini-flash-latest'
 
 function getClient(): GoogleGenAI {
   const apiKey = process.env.GEMINI_API_KEY
