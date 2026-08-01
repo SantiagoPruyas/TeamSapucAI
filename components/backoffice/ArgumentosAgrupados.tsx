@@ -41,9 +41,9 @@ export function ArgumentosAgrupados({ argumentos, totalSapucais, onAgrupar, isAg
 
   return (
     <div className="tarjeta-blanca p-6 flex flex-col h-full">
-      <div className="flex items-baseline justify-between mb-4">
+      <div className="flex items-baseline justify-between gap-3 flex-wrap mb-4">
         <h2 className="t-title text-tinta">Argumentos principales (IA)</h2>
-        <span className="t-label text-tinta-tenue">datos de demostración</span>
+        <span className="t-label text-tinta-tenue shrink-0">datos de demostración</span>
       </div>
 
       <div className="flex flex-col gap-3 flex-1">

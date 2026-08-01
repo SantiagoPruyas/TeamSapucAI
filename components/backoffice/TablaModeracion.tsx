@@ -9,51 +9,71 @@ const MOCK_DATA = [
   { id: 4, usuario: 'usuario123', depto: 'Paso de los Libres', prop: 'Salud Mental en Escuelas', txt: 'Son unos ladrones todos!!!', postura: '—', estado: 'No apto' },
 ]
 
+const colorPostura: Record<string, string> = {
+  'A favor': 'var(--verde-bandera)',
+  'En contra': 'var(--cochinilla)',
+  '—': 'var(--gris-pizarra)',
+}
+
 export function TablaModeracion({ filtro }: { filtro: string }) {
   // En un caso real filtraríamos, por ahora mostramos el dummy
   return (
-    <table className="w-full text-left text-sm text-gray-700">
-      <thead className="bg-gray-50 border-b border-gray-200 text-gray-500 font-semibold">
+    <table className="w-full text-left">
+      <thead className="border-b border-hilo">
         <tr>
-          <th className="px-4 py-3 w-10"></th>
-          <th className="px-4 py-3">Usuario</th>
-          <th className="px-4 py-3">Departamento</th>
-          <th className="px-4 py-3">Propuesta</th>
-          <th className="px-4 py-3">Transcripción</th>
-          <th className="px-4 py-3">Postura IA</th>
-          <th className="px-4 py-3">Estado IA</th>
-          <th className="px-4 py-3 text-right">Acciones</th>
+          <th className="pl-4 pr-2 py-3 w-8"></th>
+          <th className="px-2 py-3 t-label text-tinta-tenue whitespace-nowrap">Usuario</th>
+          <th className="px-2 py-3 t-label text-tinta-tenue">Depto.</th>
+          <th className="px-2 py-3 t-label text-tinta-tenue">Propuesta</th>
+          <th className="px-2 py-3 t-label text-tinta-tenue">Transcripción</th>
+          <th className="px-2 py-3 t-label text-tinta-tenue whitespace-nowrap">Postura IA</th>
+          <th className="px-2 py-3 t-label text-tinta-tenue whitespace-nowrap">Estado IA</th>
+          <th className="pl-2 pr-4 py-3 t-label text-tinta-tenue text-right whitespace-nowrap">Acciones</th>
         </tr>
       </thead>
-      <tbody className="divide-y divide-gray-100">
+      <tbody className="divide-y divide-hilo">
         {MOCK_DATA.map((row) => (
-          <tr key={row.id} className="hover:bg-gray-50">
-            <td className="px-4 py-3 text-gray-400 text-xs text-center">{row.id}</td>
-            <td className="px-4 py-3 font-semibold text-gray-900">{row.usuario}</td>
-            <td className="px-4 py-3 text-gray-600">{row.depto}</td>
-            <td className="px-4 py-3 text-gray-600">{row.prop}</td>
-            <td className="px-4 py-3 text-gray-500 truncate max-w-[250px]" title={row.txt}>{row.txt}</td>
-            <td className="px-4 py-3">
-              <span className={`px-2 py-1 rounded text-xs font-bold ${
-                row.postura === 'A favor' ? 'text-green-700' :
-                row.postura === 'En contra' ? 'text-red-700' :
-                'text-gray-500'
-              }`}>
+          <tr key={row.id} className="hover:bg-lienzo transition-colors">
+            <td className="pl-4 pr-2 py-3 t-label text-gris-pizarra text-center">{row.id}</td>
+            <td className="px-2 py-3 t-body font-semibold text-tinta whitespace-nowrap">{row.usuario}</td>
+            <td className="px-2 py-3 t-body text-tinta-tenue max-w-[100px]">{row.depto}</td>
+            <td className="px-2 py-3 t-body text-tinta-tenue max-w-[150px] line-clamp-2">{row.prop}</td>
+            <td className="px-2 py-3 t-body text-tinta-tenue truncate max-w-[160px]" title={row.txt}>{row.txt}</td>
+            <td className="px-2 py-3 whitespace-nowrap">
+              <span
+                className="t-label px-2 py-0.5 rounded-sm"
+                style={{ backgroundColor: `color-mix(in srgb, ${colorPostura[row.postura]} 14%, transparent)`, color: colorPostura[row.postura] }}
+              >
                 {row.postura}
               </span>
             </td>
-            <td className="px-4 py-3">
-              <span className={`text-xs font-semibold ${row.estado === 'No apto' ? 'text-red-600' : 'text-orange-500'}`}>
+            <td className="px-2 py-3 whitespace-nowrap">
+              <span
+                className="t-label"
+                style={{ color: row.estado === 'No apto' ? 'var(--cochinilla)' : 'var(--tinta-tenue)' }}
+              >
                 {row.estado}
               </span>
             </td>
-            <td className="px-4 py-3 flex items-center justify-end gap-2">
-              <button className="flex items-center gap-1 text-green-700 font-semibold px-2 py-1 hover:bg-green-50 rounded">
-                <Check size={14} /> Aprobar
-              </button>
-              <button className="flex items-center gap-1 text-red-600 font-semibold px-2 py-1 hover:bg-red-50 rounded">
-                <X size={14} /> Ocultar
-              </button>
+            <td className="pl-2 pr-4 py-3 whitespace-nowrap">
+              <div className="flex items-center justify-end gap-1.5">
+                <button
+                  title="Aprobar"
+                  aria-label="Aprobar"
+                  className="flex items-center justify-center w-8 h-8 rounded-full transition-colors hover:bg-lienzo"
+                  style={{ color: 'var(--verde-bandera)' }}
+                >
+                  <Check size={16} />
+                </button>
+                <button
+                  title="Ocultar"
+                  aria-label="Ocultar"
+                  className="flex items-center justify-center w-8 h-8 rounded-full transition-colors hover:bg-lienzo"
+                  style={{ color: 'var(--cochinilla)' }}
+                >
+                  <X size={16} />
+                </button>
+              </div>
             </td>
           </tr>
         ))}

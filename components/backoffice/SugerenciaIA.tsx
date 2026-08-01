@@ -22,49 +22,48 @@ export function SugerenciaIA({
   const categorias = intereses.filter(i => interesesSugeridos.includes(i.id))
 
   return (
-    <div className="bg-[#F7F5F0] rounded p-6 shadow-sm border-l-4 border-[#C89A3C]">
+    <div className="tarjeta-blanca p-6 border-l-[3px]" style={{ borderLeftColor: 'var(--oro-filete)' }}>
       <div className="flex items-center gap-2 mb-4">
-        <Sparkles size={18} className="text-[#C89A3C]" />
-        <span className="font-display uppercase tracking-widest text-xs font-bold text-[#C89A3C]">
-          Sugerido por IA
-        </span>
+        <Sparkles size={16} className="text-oro-filete" aria-hidden />
+        <span className="t-label text-oro-filete">Sugerido por IA</span>
       </div>
 
       <div className="mb-6">
-        <label className="block text-sm font-semibold text-[#5A6472] mb-2 font-body">Resumen para el ciudadano</label>
+        <label className="block t-label text-tinta-tenue mb-2">Resumen para el ciudadano</label>
         <textarea
           value={resumen}
           onChange={(e) => onResumenChange(e.target.value)}
-          className="w-full bg-[#EFEBE2] text-[#14181F] p-4 rounded font-body leading-relaxed border-none focus:ring-1 focus:ring-[#C89A3C] outline-none resize-y min-h-[120px]"
+          className="w-full bg-lienzo text-tinta p-4 rounded-2xl t-body border border-hilo focus:ring-1 focus:ring-oro-filete outline-none resize-y min-h-[120px]"
         />
-        <p className="text-xs text-[#5A6472] mt-2 font-body">Podés editar este resumen libremente antes de aprobarlo.</p>
+        <p className="t-label text-tinta-tenue mt-2 normal-case tracking-normal">Podés editar este resumen libremente antes de aprobarlo.</p>
       </div>
 
       <div className="mb-8">
-        <label className="block text-sm font-semibold text-[#5A6472] mb-3 font-body">Categorías detectadas</label>
+        <label className="block t-label text-tinta-tenue mb-3">Categorías detectadas</label>
         <div className="flex flex-wrap gap-2">
           {categorias.map(cat => (
-            <div key={cat.id} className="flex items-center gap-1.5 bg-[#EFEBE2] px-3 py-1.5 rounded-sm">
-              <IconoInteres nombre={cat.icono} size={16} className="text-tinta-tenue" aria-hidden />
-              <span className="font-display uppercase tracking-wider text-xs font-semibold text-[#14181F]">{cat.nombre}</span>
+            <div key={cat.id} className="flex items-center gap-1.5 bg-lienzo px-2.5 py-1 rounded-full border border-hilo">
+              <IconoInteres nombre={cat.icono} size={14} className="text-tinta-tenue" aria-hidden />
+              <span className="t-label text-tinta">{cat.nombre}</span>
             </div>
           ))}
           {categorias.length === 0 && (
-            <span className="text-[#5A6472] font-body text-sm italic">Ninguna categoría sugerida</span>
+            <span className="t-body text-tinta-tenue italic">Ninguna categoría sugerida</span>
           )}
         </div>
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex gap-3">
         <button
           onClick={onAceptar}
-          className="bg-[#1E6B45] hover:bg-[#154d31] text-[#FBFAF7] font-body font-semibold px-6 py-2.5 rounded transition-colors"
+          className="px-6 py-2.5 rounded-full t-label text-blanco-cosido sombra-boton hover:opacity-90 transition-opacity"
+          style={{ backgroundColor: 'var(--verde-bandera)' }}
         >
           Aceptar y continuar
         </button>
         <button
           onClick={onDescartar}
-          className="bg-transparent hover:bg-[#EFEBE2] text-[#5A6472] font-body font-semibold px-6 py-2.5 rounded transition-colors"
+          className="px-6 py-2.5 rounded-full t-label text-tinta-tenue hover:bg-lienzo transition-colors"
         >
           Descartar sugerencia
         </button>

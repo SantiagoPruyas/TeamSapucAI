@@ -1,44 +1,61 @@
+'use client'
+
 import Link from 'next/link'
-import { FileText, MessageSquare, Map, Settings } from 'lucide-react'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+import { FileText, Gavel, ShieldCheck } from 'lucide-react'
+
+const NAV_ITEMS = [
+  { href: '/cargar', label: 'Cargar propuesta', icon: FileText },
+  { href: '/panel', label: 'Panel del diputado', icon: Gavel },
+  { href: '/moderacion', label: 'Moderación', icon: ShieldCheck },
+]
 
 export function NavLateral() {
+  const pathname = usePathname()
+
   return (
-    <aside className="w-64 h-screen fixed left-0 top-0 bg-[#0D1730] border-r border-[#17264A] flex flex-col">
-      <div className="p-6">
-        <h1 className="text-xl font-bold font-display uppercase tracking-wider text-[#FBFAF7]">
-          SapucAI <span className="text-[#C89A3C]">Gov</span>
-        </h1>
+    <aside className="w-full h-screen sticky top-0 bg-lienzo-hueso border-r border-hilo flex flex-col">
+      <div className="flex items-center gap-3 px-5 py-6 border-b border-hilo">
+        <Image
+          src="/logo-hcdc2.png"
+          alt="Honorable Cámara de Diputados de Corrientes"
+          width={513}
+          height={242}
+          className="h-9 w-auto shrink-0"
+          priority
+        />
+        <div className="flex flex-col leading-none min-w-0">
+          <span className="t-label text-tinta-tenue whitespace-nowrap">Cámara de Corrientes</span>
+          <span className="font-display font-bold uppercase tracking-widest text-base leading-tight mt-1">
+            <span className="text-indigo-campo">Sapuc</span><span className="text-oro-filete">AI</span>
+          </span>
+        </div>
       </div>
 
-      <nav className="flex-1 px-4 space-y-2 mt-4">
-        <Link
-          href="/backoffice/cargar"
-          className="flex items-center gap-3 px-3 py-2 rounded text-[#FBFAF7] hover:bg-[#17264A] transition-colors"
-        >
-          <FileText size={18} className="text-[#D6CFC0]" />
-          <span className="font-body text-sm font-semibold">Cargar Propuesta</span>
-        </Link>
-        <Link
-          href="/backoffice/moderacion"
-          className="flex items-center gap-3 px-3 py-2 rounded text-[#5A6472] hover:bg-[#17264A] hover:text-[#FBFAF7] transition-colors"
-        >
-          <MessageSquare size={18} />
-          <span className="font-body text-sm font-semibold">Moderación</span>
-        </Link>
-        <Link
-          href="/backoffice/mapa"
-          className="flex items-center gap-3 px-3 py-2 rounded text-[#5A6472] hover:bg-[#17264A] hover:text-[#FBFAF7] transition-colors"
-        >
-          <Map size={18} />
-          <span className="font-body text-sm font-semibold">Territorio</span>
-        </Link>
+      <nav className="flex-1 px-3 py-6 space-y-1.5">
+        {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+          const activo = pathname === href || pathname?.startsWith(`${href}/`)
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-full t-label transition-colors focus-visible:ring-oro ${
+                activo
+                  ? 'bg-indigo-campo text-blanco-cosido sombra-boton'
+                  : 'text-tinta-tenue hover:bg-lienzo hover:text-tinta'
+              }`}
+            >
+              <Icon size={17} className="shrink-0" aria-hidden />
+              <span className="truncate">{label}</span>
+            </Link>
+          )
+        })}
       </nav>
 
-      <div className="p-4 border-t border-[#17264A]">
-        <button className="flex items-center gap-3 px-3 py-2 w-full text-left rounded text-[#5A6472] hover:bg-[#17264A] hover:text-[#FBFAF7] transition-colors">
-          <Settings size={18} />
-          <span className="font-body text-sm font-semibold">Ajustes</span>
-        </button>
+      <div className="px-5 py-4 border-t border-hilo">
+        <p className="t-label text-tinta-tenue leading-relaxed">Equipo de Cámara</p>
+        <p className="t-label text-gris-pizarra leading-relaxed">datos de demostración</p>
       </div>
     </aside>
   )
