@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+
+
+:root {
+  /* Sapucái Colors */
+  --indigo-nocturno: #0D1730;
+  --azul-yaguarete: #1A365D;
+  --celeste-parana: #E0F2FE;
+  --tierra-colorada: #9B2C2C;
+  --dorado-lapacho: #D97706;
+  --blanco-niveo: #FFFFFF;
+
+  /* Theme mappings */
+  --background: var(--indigo-nocturno);
+  --foreground: var(--blanco-niveo);
+  
+  --card: var(--indigo-nocturno);
+  --card-foreground: var(--blanco-niveo);
+  
+  --popover: var(--indigo-nocturno);
+  --popover-foreground: var(--blanco-niveo);
+  
+  --primary: var(--azul-yaguarete);
+  --primary-foreground: var(--blanco-niveo);
+  
+  --secondary: var(--celeste-parana);
+  --secondary-foreground: var(--indigo-nocturno);
+  
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  
+  --accent: var(--celeste-parana);
+  --accent-foreground: var(--indigo-nocturno);
+  
+  --destructive: var(--tierra-colorada);
+  --destructive-foreground: var(--blanco-niveo);
+  
+  --border: var(--azul-yaguarete);
+  --input: var(--azul-yaguarete);
+  --ring: var(--celeste-parana);
+
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  /* Colors */
+  --color-indigo-nocturno: var(--indigo-nocturno);
+  --color-azul-yaguarete: var(--azul-yaguarete);
+  --color-celeste-parana: var(--celeste-parana);
+  --color-tierra-colorada: var(--tierra-colorada);
+  --color-dorado-lapacho: var(--dorado-lapacho);
+  --color-blanco-niveo: var(--blanco-niveo);
+  
+  /* Semantic */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  /* Typography */
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

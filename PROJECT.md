@@ -126,8 +126,8 @@ cambia en silencio en tu rama.
         ┌──────────────────────────┼──────────────────────────┐
         ▼                          ▼                          ▼
 ┌───────────────┐        ┌──────────────────┐      ┌────────────────────┐
-│   SUPABASE    │        │ AMAZON TRANSCRIBE│      │  AMAZON BEDROCK    │
-│               │        │                  │      │  (Claude)          │
+│   SUPABASE    │        │   GEMINI API     │      │  AMAZON BEDROCK    │
+│               │        │  (multimodal)    │      │  (Claude)          │
 │ · Postgres    │        │  audio → texto   │      │                    │
 │ · Auth (RLS)  │        │  es-AR           │      │ · resumir ley      │
 │ · Storage     │        └──────────────────┘      │ · categorizar      │
@@ -141,18 +141,21 @@ cambia en silencio en tu rama.
 ### 6.2 Por qué cada pieza
 
 - **Next.js App Router, un solo servicio.** No hay backend separado. Las Server Actions escriben
-  en Supabase y llaman a AWS con las credenciales del servidor. Nada de claves de AWS en el browser,
-  nunca. Un solo deploy en Amplify, cero CORS, cero coordinación entre repos.
+  en Supabase y llaman a AWS y a Gemini con las credenciales del servidor. Nada de claves de AWS ni
+  la API key de Gemini en el browser, nunca. Un solo deploy en Amplify, cero CORS, cero coordinación
+  entre repos.
 
 - **Supabase.** Es Postgres, igual que el RDS de la consigna, así que el esquema es portable.
   Nos regala tres cosas que en 24hs no queremos construir: Auth con sesiones, Storage para los
   audios, y Realtime. **Realtime es un regalo para la demo**: el panel del diputado se actualiza
   solo mientras el público manda sapucais desde sus celulares. Eso se vende solo.
 
-- **Amazon Transcribe, no Bedrock, para el audio.**
-  ⚠️ **Bedrock no hace speech-to-text.** No hay modelo de transcripción ahí. Es otro servicio,
-  otro cliente SDK (`@aws-sdk/client-transcribe`), otro permiso IAM. Descubrirlo el sábado a la
-  noche cuesta tres horas. Descubrirlo ahora cuesta cero.
+- **Gemini, no Bedrock, para el audio.**
+  ⚠️ **Bedrock no hace speech-to-text.** No hay modelo de transcripción ahí. La transcripción la
+  hace **Gemini**, que acepta el audio como entrada multimodal y devuelve el texto en una sola
+  llamada HTTP: otro SDK (`@google/genai`), otra credencial (`GEMINI_API_KEY`), y ningún job
+  asíncrono que haya que ir a buscar después. Descubrir esto el sábado a la noche cuesta tres horas.
+  Descubrirlo ahora cuesta cero.
 
 - **Bedrock (Claude) para todo lo demás.** Cinco trabajos, **cinco prompts separados**. No hay un
   "prompt maestro" que haga todo junto: cada tarea tiene su prompt, su formato de salida y su
@@ -173,7 +176,7 @@ cambia en silencio en tu rama.
   /supabase           → clientes (browser / server), tipos generados
   /ai
     bedrock.ts        → cliente único de Bedrock
-    transcribe.ts     → cliente de Transcribe
+    gemini.ts         → cliente de Gemini (transcripción audio → texto)
     prompts/          → UN archivo por tarea de IA (ver §8)
   /domain             → lógica de negocio pura, testeable sin red
 /supabase
@@ -225,8 +228,9 @@ nunca prosa libre — el código tiene que poder parsear la salida sin adivinar.
 **Reglas para las cinco:**
 - Las categorías salen de un **catálogo cerrado**. La IA elige de una lista, no inventa etiquetas.
   Si inventa, el matcheo con los intereses del usuario se rompe.
-- Si Bedrock falla o tarda, **la app no se cae**: la propuesta queda sin resumen y el sapucai queda
-  "pendiente de análisis". Estado degradado, no error 500.
+- Si Bedrock o Gemini fallan o tardan, **la app no se cae**: la propuesta queda sin resumen y el
+  sapucai queda "pendiente de análisis" (sin transcripción o sin postura). Estado degradado, no
+  error 500.
 - El prompt #5 tiene prohibido responder con conocimiento general. Solo con el texto de esa
   propuesta. Un chatbot legislativo que alucina una ley es un desastre de relaciones públicas.
 
@@ -246,7 +250,7 @@ lo que no era.
 - [ ] Feed del ciudadano filtrado por sus intereses
 - [ ] Detalle de propuesta con el resumen en criollo
 - [ ] Grabar audio en el navegador y subirlo a Supabase Storage
-- [ ] Transcripción con Amazon Transcribe
+- [ ] Transcripción con Gemini
 - [ ] Moderación + clasificación de postura con Bedrock
 - [ ] Panel del diputado: termómetro a favor/en contra + lista de sapucais
 - [ ] **Respuesta pública del diputado**
@@ -358,7 +362,7 @@ Cuatro carriles con poco solapamiento. Cada uno es dueño de sus archivos.
 |--------|-----------|------------|
 | **A — Cimientos y datos** | `/supabase`, `/lib/supabase`, Auth, RLS, seed | Que todos puedan leer y escribir datos reales desde la hora 3 |
 | **B — Ciudadano** | `/app/(citizen)`, `/components/citizen` | Onboarding, feed, detalle, grabador de audio |
-| **C — IA** | `/lib/ai`, los 5 prompts, Transcribe, Bedrock | Funciones puras: entra texto/audio, sale JSON. Testeables sin UI. |
+| **C — IA** | `/lib/ai`, los 5 prompts, Gemini, Bedrock | Funciones puras: entra texto/audio, sale JSON. Testeables sin UI. |
 | **D — Backoffice y deploy** | `/app/(backoffice)`, Amplify, variables de entorno | Carga de propuestas, panel, respuesta, y que el deploy exista temprano |
 
 **Reglas de convivencia:**
@@ -384,12 +388,14 @@ AWS_REGION=us-east-1
 AWS_ACCESS_KEY_ID=                # solo servidor
 AWS_SECRET_ACCESS_KEY=            # solo servidor
 BEDROCK_MODEL_ID=
+GEMINI_API_KEY=                   # solo servidor. Transcripción.
+GEMINI_MODEL_ID=gemini-2.5-flash
 ```
 
 ⚠️ **Cualquier variable con `NEXT_PUBLIC_` viaja al navegador y es pública.** Las credenciales de
-AWS y la service role de Supabase van sin ese prefijo y se usan **solo** en Server Actions y Route
-Handlers. Si una clave de AWS llega al bundle del cliente, cualquiera puede gastar la cuota de
-Bedrock del equipo.
+AWS, la API key de Gemini y la service role de Supabase van sin ese prefijo y se usan **solo** en
+Server Actions y Route Handlers. Si una de esas claves llega al bundle del cliente, cualquiera puede
+gastar la cuota del equipo.
 
 ⚠️ El `README.md` de este repo **ya tiene credenciales commiteadas** (venían así de la organización).
 No agregues más. Si rotan alguna, avisá al equipo.
@@ -426,4 +432,9 @@ Cada cambio de rumbo se anota acá, con fecha y motivo. Esto es la memoria del p
 | 2026-08-01 | Documento maestro inicial | Alinear al equipo antes de escribir código |
 | 2026-08-01 | Web Push sale del núcleo, queda como mejora prioritaria | 24hs y 3-4 personas. Se retoma pasadas las 18hs si el ciclo ya cierra. |
 | 2026-08-01 | Supabase como DB, RDS como respaldo | El RDS solo es accesible desde las oficinas de Devlights; rompe el deploy en Amplify |
-| 2026-08-01 | Amazon Transcribe para el audio, no Bedrock | Bedrock no ofrece speech-to-text |
+| 2026-08-01 | ~~Amazon Transcribe para el audio, no Bedrock~~ — **revertida el mismo día, ver la última fila** | Bedrock no ofrece speech-to-text. La conclusión sigue siendo válida; el reemplazo elegido ya no es Transcribe. |
+| 2026-08-01 | El front se construye primero **solo contra mock data**, con plan propio en [PLAN-FRONT.md](PLAN-FRONT.md) | Desbloquea a las dos personas del front sin esperar el esquema ni la IA. La frontera es `/lib/mock/api.*.ts`: el backend se enchufa cambiando esos archivos. |
+| 2026-08-01 | Dirección visual cerrada: **"El Estandarte"**, documentada en [DESIGN.md](DESIGN.md) | Elegida con el flujo de dirección de la skill `impeccable` (seed `852e285a`), sobre siete mundos derivados de la cultura correntina. Evita el default de "app cívica gris". No se reabre. |
+| 2026-08-01 | Stack de UI del front: Tailwind v4 + shadcn/ui, tokens propios de DESIGN.md | Velocidad y accesibilidad de base, con identidad propia vía tokens. Sin GSAP ni librerías de mapas. |
+| 2026-08-01 | Reparto del front: Lara → ciudadano, Malen → backoffice | Territorios de archivos disjuntos. Ver §2 de PLAN-FRONT.md. |
+| 2026-08-01 | **Gemini reemplaza a Amazon Transcribe** para audio→texto | Una sola llamada HTTP con el audio como entrada multimodal, sin job asíncrono ni permisos IAM extra. Transcribe queda descartado. Bedrock (Claude) sigue haciendo las otras cuatro tareas. |

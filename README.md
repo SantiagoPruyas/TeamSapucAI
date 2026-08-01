@@ -1,38 +1,36 @@
-# HackIAthon Devlights 2026 - Grupo 23
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Repositorio oficial del Grupo 23 para la HackIAthon Devlights 2026.
+## Getting Started
 
-## Instrucciones Git
+First, run the development server:
 
-- Clona este repositorio con las credenciales HTTPS proporcionadas.
-- Trabaja en la rama `main`.
-- Commitea y pushea tu progreso regularmente.
-
-## Credenciales Git (HTTPS CodeCommit)
-
-| Campo | Valor |
-|-------|-------|
-| URL del repo | `https://git-codecommit.us-east-1.amazonaws.com/v1/repos/hakIA-grupo-23` |
-| Usuario Git | `user-hakIA-grupo-23-at-760050153031` |
-| Password Git | `i1/n0otSLIdIBl0IDXATHN+zzwVCYy4/8+V5++uCHRpsoMdwSKl3ex9aXaI=` |
-
-## Base de Datos PostgreSQL
-
-| Campo | Valor |
-|-------|-------|
-| Host | `hackiathon-db-equipos.c4tuk66uuqg9.us-east-1.rds.amazonaws.com` |
-| Puerto | `5432` |
-| Base de datos | `db_hakIA_grupo_23` |
-| Usuario | `user_grupo_23` |
-| Password | `eIFonlDZ59GWmq4WLFAf` |
-| SSL | `require` |
-
-URI de conexion:
-
-```
-postgresql://user_grupo_23:eIFonlDZ59GWmq4WLFAf@hackiathon-db-equipos.c4tuk66uuqg9.us-east-1.rds.amazonaws.com:5432/db_hakIA_grupo_23?sslmode=require
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-AVISO: La base de datos solo es accesible desde las oficinas de Devlights.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Buena suerte!
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
