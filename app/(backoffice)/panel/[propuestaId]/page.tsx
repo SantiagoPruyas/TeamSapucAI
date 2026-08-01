@@ -2,126 +2,114 @@
 
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
+import { Propuesta, Argumento } from '@/lib/types'
 import { getPanel, getArgumentos, generarArgumentos } from '@/lib/mock/api.backoffice'
-import { MetricasCabecera } from '@/components/backoffice/MetricasCabecera'
+
 import { ResumenPropuesta } from '@/components/backoffice/ResumenPropuesta'
+import { MetricasCabecera } from '@/components/backoffice/MetricasCabecera'
 import { Termometro } from '@/components/backoffice/Termometro'
 import { ArgumentosAgrupados } from '@/components/backoffice/ArgumentosAgrupados'
-import { Propuesta, Interes, Argumento } from '@/lib/types'
-
-type PanelData = Propuesta & {
-  interesesDetalle: Interes[]
-  participacionPorcentaje: number
-  sapucaisPendientesAnalisis: number
-}
+import { MapaDepartamentos } from '@/components/backoffice/MapaDepartamentos'
+import { EditorRespuesta } from '@/components/backoffice/EditorRespuesta'
+import { Download } from 'lucide-react'
 
 export default function PanelDiputadoPage() {
   const { propuestaId } = useParams()
   
-  const [data, setData] = useState<PanelData | null>(null)
+  const [propuesta, setPropuesta] = useState<Propuesta | null>(null)
   const [argumentos, setArgumentos] = useState<Argumento[] | null>(null)
   
   const [isLoading, setIsLoading] = useState(true)
   const [isAgrupando, setIsAgrupando] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    async function loadData() {
+    async function load() {
       try {
-        const panelData = await getPanel(propuestaId as string)
-        setData(panelData as PanelData)
+        const id = Array.isArray(propuestaId) ? propuestaId[0] : (propuestaId as string)
+        if (!id) return
+        const data = await getPanel(id)
+        setPropuesta(data)
         
-        const args = await getArgumentos(propuestaId as string)
-        setArgumentos(args)
-      } catch (err: any) {
-        setError(err.message)
+        // Cargar argumentos si tiene
+        if (data && data.totalSapucais > 0) {
+          const args = await getArgumentos(id)
+          setArgumentos(args)
+        }
+      } catch (err) {
+        console.error(err)
       } finally {
         setIsLoading(false)
       }
     }
-    loadData()
+    load()
   }, [propuestaId])
 
   const handleAgrupar = async () => {
+    if (!propuesta) return
     setIsAgrupando(true)
     try {
-      const args = await generarArgumentos(propuestaId as string)
-      setArgumentos(args)
-    } catch (err: any) {
-      alert("Error simulado al agrupar: " + err.message)
+      const result = await generarArgumentos(propuesta.id)
+      setArgumentos(result)
+    } catch (e) {
+      console.error(e)
     } finally {
       setIsAgrupando(false)
     }
   }
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-pulse text-[#C89A3C] font-display font-bold uppercase tracking-widest text-xl">
-          Cargando panel...
-        </div>
-      </div>
-    )
+    return <div className="p-8 font-display text-white">Cargando panel...</div>
   }
 
-  if (error || !data) {
-    return (
-      <div className="bg-[#A82418]/10 border-l-4 border-[#A82418] p-6 rounded text-[#A82418]">
-        <h2 className="font-display font-bold text-xl uppercase mb-2">Error</h2>
-        <p className="font-body">{error || "Propuesta no encontrada"}</p>
-      </div>
-    )
+  if (!propuesta) {
+    return <div className="p-8 font-display text-white">No se encontró la propuesta.</div>
   }
 
   return (
-    <div className="space-y-10">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-[#17264A] pb-6">
-        <div>
-          <h1 className="text-4xl font-display font-bold uppercase tracking-wider text-[#FBFAF7] leading-none mb-2">
-            Panel de Análisis
+    <div className="bg-[#FBFAF7] min-h-screen text-gray-900">
+      {/* Header section identical to mockup */}
+      <div className="px-8 py-6 border-b flex justify-between items-start bg-white">
+        <div className="flex items-center gap-4">
+          <h1 className="text-2xl font-bold font-display max-w-2xl leading-tight text-[#14181F]">
+            {propuesta.titulo}
           </h1>
-          <p className="font-body text-[#D6CFC0] text-lg">
-            Monitoreo en tiempo real de la participación ciudadana.
-          </p>
+          <span className="bg-[#1E6B45]/10 text-[#1E6B45] text-xs px-3 py-1 rounded-full font-bold uppercase tracking-widest">
+            Publicado
+          </span>
         </div>
+        <button className="flex items-center gap-2 border border-gray-300 rounded px-4 py-2 text-sm font-semibold hover:bg-gray-50">
+          <Download size={16}/> Exportar
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-        {/* Columna Izquierda: Datos y Contexto */}
-        <div className="xl:col-span-5 space-y-8">
-          <MetricasCabecera 
-            totalSapucais={data.totalSapucais}
-            participacionPorcentaje={data.participacionPorcentaje}
-            pendientesAnalisis={data.sapucaisPendientesAnalisis}
-            esMock={true}
-          />
-          <ResumenPropuesta 
-            titulo={data.titulo}
-            resumen={data.resumenIa}
-            intereses={data.interesesDetalle}
-          />
+      {/* Main Grid: 2 columns */}
+      <div className="p-8 grid grid-cols-1 xl:grid-cols-2 gap-8">
+        
+        {/* Left Column */}
+        <div className="flex flex-col gap-8">
+          <div className="h-[300px]">
+            <Termometro {...propuesta.termometro} />
+          </div>
+          <div className="h-[300px]">
+            <MapaDepartamentos />
+          </div>
         </div>
 
-        {/* Columna Derecha: El Pulso (Termómetro y Argumentos) */}
-        <div className="xl:col-span-7 space-y-8">
-          <Termometro 
-            aFavor={data.termometro.aFavor}
-            enContra={data.termometro.enContra}
-            neutro={data.termometro.neutro}
-          />
-
-          <div>
-            <h2 className="text-[#FBFAF7] font-display uppercase tracking-wider text-xl font-bold mb-4">
-              Síntesis de Argumentos
-            </h2>
+        {/* Right Column */}
+        <div className="flex flex-col gap-8">
+          <div className="h-[300px]">
             <ArgumentosAgrupados 
-              argumentos={argumentos}
-              totalSapucais={data.totalSapucais}
+              argumentos={argumentos} 
+              totalSapucais={propuesta.totalSapucais}
               onAgrupar={handleAgrupar}
               isAgrupando={isAgrupando}
             />
           </div>
+          <div className="h-[300px]">
+            <EditorRespuesta />
+          </div>
         </div>
+
       </div>
     </div>
   )

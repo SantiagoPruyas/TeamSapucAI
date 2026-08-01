@@ -171,7 +171,7 @@ insignias de tema (40px). Nada más es un círculo, y nada es una pastilla.
 
 Silueta recurrente: **la banda de izada**. Todo estandarte lleva arriba una banda horizontal de 8px
 en Índigo Nocturno con dos puntos de ojal de 3px separados 24px del borde izquierdo. Es la firma del
-sistema y es lo que hace reconocible una tarjeta de Sapucái con todo el contenido borrado.
+sistema y es lo que hace reconocible una tarjeta de SapucAI con todo el contenido borrado.
 
 ## Do's and Don'ts
 
