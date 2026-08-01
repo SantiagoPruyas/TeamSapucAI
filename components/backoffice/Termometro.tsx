@@ -8,63 +8,71 @@ interface TermometroProps {
 
 export function Termometro({ aFavor, enContra, neutro }: TermometroProps) {
   const total = aFavor + enContra + neutro
-
   const pctFavor = total > 0 ? Math.round((aFavor / total) * 100) : 0
   const pctContra = total > 0 ? Math.round((enContra / total) * 100) : 0
-  const pctNeutro = total > 0 ? 100 - pctFavor - pctContra : 0 // Ajuste fino para sumar 100
+  const pctNeutro = total > 0 ? 100 - pctFavor - pctContra : 0
 
   return (
-    <div className="bg-[#EFEBE2] p-8 rounded-sm shadow-sm">
-      <h2 className="text-[#14181F] font-display uppercase tracking-wider text-xl font-bold mb-6">
-        Termómetro de Posturas
-      </h2>
+    <div className="bg-white p-6 rounded shadow-sm border border-gray-100 flex flex-col h-full">
+      <h2 className="text-gray-900 font-bold mb-1">Termómetro de opinión</h2>
+      <p className="text-gray-500 text-sm font-semibold mb-6">Total de Sapucais: {total}</p>
 
-      {/* La Barra (división heráldica) */}
-      <div className="h-16 w-full flex bg-[#77808F] overflow-hidden rounded-sm mb-6 shadow-inner">
-        {total === 0 ? (
-          <div className="h-full bg-[#D6CFC0] w-full" />
-        ) : (
-          <>
-            <div 
-              className="h-full bg-[#1E6B45] transition-all duration-1000 border-r border-[#EFEBE2]" 
-              style={{ width: `${pctFavor}%` }} 
+      <div className="flex items-center justify-between flex-1">
+        {/* Simple CSS Donut Chart */}
+        <div className="relative w-32 h-32 flex-shrink-0">
+          <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
+            {/* Neutro */}
+            <circle
+              stroke="#77808F"
+              strokeWidth="8"
+              fill="transparent"
+              r="14"
+              cx="18"
+              cy="18"
+              strokeDasharray={`${pctNeutro} ${100 - pctNeutro}`}
+              strokeDashoffset="0"
             />
-            <div 
-              className="h-full bg-[#A82418] transition-all duration-1000 border-r border-[#EFEBE2]" 
-              style={{ width: `${pctContra}%` }} 
+            {/* A Favor */}
+            <circle
+              stroke="#1E6B45"
+              strokeWidth="8"
+              fill="transparent"
+              r="14"
+              cx="18"
+              cy="18"
+              strokeDasharray={`${pctFavor} ${100 - pctFavor}`}
+              strokeDashoffset={`-${pctNeutro}`}
             />
-            <div 
-              className="h-full bg-[#77808F] transition-all duration-1000" 
-              style={{ width: `${pctNeutro}%` }} 
+            {/* En Contra */}
+            <circle
+              stroke="#A82418"
+              strokeWidth="8"
+              fill="transparent"
+              r="14"
+              cx="18"
+              cy="18"
+              strokeDasharray={`${pctContra} ${100 - pctContra}`}
+              strokeDashoffset={`-${pctNeutro + pctFavor}`}
             />
-          </>
-        )}
-      </div>
-
-      {/* Los Números */}
-      <div className="grid grid-cols-3 gap-8">
-        <div>
-          <div className="flex items-baseline gap-2 mb-1">
-            <span className="text-5xl font-body font-bold text-[#1E6B45] tabular-nums">{total === 0 ? '-' : pctFavor}%</span>
-            <span className="text-xl font-body text-[#5A6472] tabular-nums">({aFavor})</span>
-          </div>
-          <span className="font-display uppercase tracking-widest text-sm font-bold text-[#1E6B45]">A Favor</span>
+          </svg>
         </div>
 
-        <div>
-          <div className="flex items-baseline gap-2 mb-1">
-            <span className="text-5xl font-body font-bold text-[#A82418] tabular-nums">{total === 0 ? '-' : pctContra}%</span>
-            <span className="text-xl font-body text-[#5A6472] tabular-nums">({enContra})</span>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 rounded-full bg-[#A82418]"></div>
+            <span className="text-sm font-bold text-gray-800">{pctContra}%</span>
+            <span className="text-sm text-gray-500">En contra</span>
           </div>
-          <span className="font-display uppercase tracking-widest text-sm font-bold text-[#A82418]">En Contra</span>
-        </div>
-
-        <div>
-          <div className="flex items-baseline gap-2 mb-1">
-            <span className="text-5xl font-body font-bold text-[#77808F] tabular-nums">{total === 0 ? '-' : pctNeutro}%</span>
-            <span className="text-xl font-body text-[#5A6472] tabular-nums">({neutro})</span>
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 rounded-full bg-[#1E6B45]"></div>
+            <span className="text-sm font-bold text-gray-800">{pctFavor}%</span>
+            <span className="text-sm text-gray-500">A favor</span>
           </div>
-          <span className="font-display uppercase tracking-widest text-sm font-bold text-[#77808F]">Neutro</span>
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 rounded-full bg-[#77808F]"></div>
+            <span className="text-sm font-bold text-gray-800">{pctNeutro}%</span>
+            <span className="text-sm text-gray-500">Neutro</span>
+          </div>
         </div>
       </div>
     </div>

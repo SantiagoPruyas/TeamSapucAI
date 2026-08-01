@@ -1,4 +1,4 @@
-# Contexto para asistentes de IA — Proyecto Sapucái
+# Contexto para asistentes de IA — Proyecto SapucAI
 
 **Antes de responder cualquier cosa sobre este proyecto, leé [PROJECT.md](PROJECT.md).**
 Ese archivo es la única fuente de verdad: qué construimos, por qué, qué está dentro del

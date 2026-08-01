@@ -1,4 +1,4 @@
-# PLAN MAESTRO DEL FRONT — Sapucái
+# PLAN MAESTRO DEL FRONT — SapucAI
 
 > **Este archivo es el plan de trabajo del front. Solo front. Solo mock data.**
 > Lo ejecutan dos personas, **Lara** y **Malen**, una sesión por vez, sin pisarse.
@@ -284,7 +284,7 @@ equivocada. **La columna `Cómo se invoca` es literal.**
 
 ### Skills que NO se usan en este proyecto (y por qué)
 
-- **`taste-skill`** — es para landing pages, portfolios y rediseños de sitios de marketing. Sapucái
+- **`taste-skill`** — es para landing pages, portfolios y rediseños de sitios de marketing. SapucAI
   es una app de tarea (modo *Operate*). Usar esta skill acá nos saca de DESIGN.md.
 - **`gsd-*` (todas)** — es otro sistema de planificación completo, con sus propios artefactos.
   Nuestro plan es este archivo. Mezclarlos duplica la fuente de verdad.
@@ -454,7 +454,7 @@ docs/visual/.gitkeep
    **Libre Franklin** (variable). Exportar como variables CSS `--font-display` y `--font-body`.
    Cargar ambas en `app/layout.tsx` con `display: 'swap'`.
 4. `app/layout.tsx`: `lang="es-AR"`, `<meta name="viewport">` con `viewport-fit=cover`,
-   metadata con título y descripción de Sapucái, y el `<body>` en Índigo Nocturno.
+   metadata con título y descripción de SapucAI, y el `<body>` en Índigo Nocturno.
 5. Crear las carpetas vacías con `.gitkeep`: `components/ui`, `components/citizen`,
    `components/backoffice`, `components/dev`, `lib/mock`, `docs/visual/ciudadano`,
    `docs/visual/backoffice`.
