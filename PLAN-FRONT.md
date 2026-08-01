@@ -983,7 +983,7 @@ Cada una llena su fila al cerrar la sesión. **Una sesión sin fila no está cer
 |---|---|---|---|---|---|---|---|
 | S0 | Andamiaje | Lara | ⬜ | n/a | n/a | — | |
 | S1L | Tokens y `/diseno` | Lara | ⬜ | ⬜ | ⬜ | Malen (bloqueante) | |
-| S1M | Mock data + DevSwitcher | Malen | ⬜ | n/a | n/a | Lara | |
+| S1M | Mock data + DevSwitcher | Malen | ✅ | n/a | n/a | Lara | Completado |
 | S2L | Onboarding | Lara | ⬜ | ⬜ | ⬜ | Malen | tiempo de onboarding: ___ s |
 | S2M | Shell + carga de propuesta | Malen | ⬜ | ⬜ | ⬜ | Lara | |
 | S3L | Feed | Lara | ⬜ | ⬜ | ⬜ | Malen | |
@@ -1008,7 +1008,7 @@ cosa, con fecha y quién.** Es lo que se resuelve en S8.
 
 | Fecha | Quién | Qué | Estado |
 |---|---|---|---|
-| 2026-08-01 | Malen | Monta `DevSwitcher` en `app/layout.tsx` (territorio de Lara), única edición prevista | pendiente |
+| 2026-08-01 | Malen | Monta `DevSwitcher` en `app/layout.tsx` (territorio de Lara), única edición prevista | hecho |
 | | | | |
 
 ---
