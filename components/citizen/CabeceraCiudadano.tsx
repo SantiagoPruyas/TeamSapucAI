@@ -1,15 +1,16 @@
 import React from 'react'
+import Campanita from './Campanita'
 
 export function CabeceraCiudadano() {
   return (
-    <header className="w-full py-4 px-6 flex justify-between items-center border-b border-[#14181F]/10">
+    <header className="w-full py-4 px-6 flex justify-between items-center border-b border-hilo">
       <div className="flex items-center gap-2">
-        <span className="text-[#FBFAF7] font-display font-bold uppercase tracking-widest text-lg">
-          SapucAI
+        <span className="font-display font-bold uppercase tracking-widest text-lg">
+          <span className="text-indigo-campo">Sapuc</span><span className="text-oro-filete">AI</span>
         </span>
       </div>
       <div>
-        {/* Espacio para icono de perfil, notificaciones, etc. en el futuro */}
+        <Campanita />
       </div>
     </header>
   )

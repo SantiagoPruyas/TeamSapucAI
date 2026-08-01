@@ -31,7 +31,8 @@ este orden, sin saltarse ninguno.**
 
 1. **Nadie vuelve a correr el flujo de dirección visual de `impeccable`** (`new-work`,
    `concept-seed.mjs`, `serve-question.mjs`). La dirección ya está decidida y sellada: es
-   **"El Estandarte"**, seed key `852e285a`. Está escrita en [DESIGN.md](DESIGN.md).
+   **"El Puente"** (reemplazó a "El Estandarte" el 2026-08-01, a partir de
+   `public/prototype.jpeg` — ver PROJECT.md §15). Está escrita en [DESIGN.md](DESIGN.md).
    Si una skill te ofrece elegir un mundo visual, la respuesta es: *ya está elegido, seguí DESIGN.md*.
 2. **Nadie reescribe [DESIGN.md](DESIGN.md) ni [PRODUCT.md](PRODUCT.md) por su cuenta.** Un cambio
    ahí afecta a las dos. Se propone, se acuerda, y recién entonces se escribe (§3).

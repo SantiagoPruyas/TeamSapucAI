@@ -1,6 +1,7 @@
 import React from 'react'
 import { intereses } from '@/lib/mock/data'
 import { Sparkles } from 'lucide-react'
+import { IconoInteres } from '@/components/ui/icono-interes'
 
 interface SugerenciaIAProps {
   resumen: string
@@ -44,7 +45,7 @@ export function SugerenciaIA({
         <div className="flex flex-wrap gap-2">
           {categorias.map(cat => (
             <div key={cat.id} className="flex items-center gap-1.5 bg-[#EFEBE2] px-3 py-1.5 rounded-sm">
-              <span className="text-base">{cat.icono}</span>
+              <IconoInteres nombre={cat.icono} size={16} className="text-tinta-tenue" aria-hidden />
               <span className="font-display uppercase tracking-wider text-xs font-semibold text-[#14181F]">{cat.nombre}</span>
             </div>
           ))}

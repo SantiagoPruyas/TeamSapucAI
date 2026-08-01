@@ -67,35 +67,20 @@ export default function OnboardingPage() {
   // ---- Estado: Error al cargar catálogos ----
   if (estado === 'error') {
     return (
-      <div className="flex flex-col min-h-screen" style={{ backgroundColor: '#0D1730' }}>
-        <div className="banda-izada" />
+      <div className="flex flex-col min-h-screen bg-lienzo-hueso">
         <div className="flex flex-col flex-1 items-center justify-center px-6 gap-6">
-          <div className="panel-lienzo w-full max-w-sm flex flex-col gap-4">
-            <h2 className="t-title" style={{ color: '#14181F' }}>
+          <div className="tarjeta-blanca w-full max-w-sm flex flex-col gap-4">
+            <h2 className="t-title text-tinta">
               Algo salió mal
             </h2>
-            <p className="t-body" style={{ color: '#5A6472' }}>
+            <p className="t-body text-tinta-tenue">
               No pudimos conectarnos para traer los datos. Puede ser la señal o algo momentáneo.
             </p>
           </div>
           <button
             id="btn-reintentar-onboarding"
             onClick={() => window.location.reload()}
-            style={{
-              height: '52px',
-              width: '100%',
-              maxWidth: '24rem',
-              backgroundColor: '#EFEBE2',
-              color: '#14181F',
-              border: '1px solid #C89A3C',
-              borderRadius: '2px',
-              fontFamily: 'var(--font-display)',
-              fontWeight: 600,
-              fontSize: '0.8125rem',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              cursor: 'pointer',
-            }}
+            className="w-full max-w-sm h-13 rounded-full bg-indigo-campo text-blanco-cosido sombra-boton font-display font-semibold text-[0.8125rem] tracking-widest uppercase cursor-pointer"
           >
             Reintentar
           </button>
@@ -106,13 +91,7 @@ export default function OnboardingPage() {
 
   // ---- Flujo normal (loading + ok) ----
   return (
-    <div
-      className="flex flex-col min-h-screen"
-      style={{ backgroundColor: '#0D1730' }}
-    >
-      {/* Banda de izada — firma del sistema */}
-      <div className="banda-izada" />
-
+    <div className="flex flex-col min-h-screen bg-lienzo-hueso">
       {/* Barra de progreso */}
       <Progreso paso={paso} />
 

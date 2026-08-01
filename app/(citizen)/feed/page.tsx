@@ -31,9 +31,9 @@ export default function FeedCiudadanoPage() {
         // ignore
       }
 
-      // Fallback si no viene del onboarding
+      // Fallback si no viene del onboarding (ids reales del catálogo de data.ts: i01=salud, i02=educacion)
       if (interesGuardados.length === 0) {
-        interesGuardados = ['salud', 'educacion']
+        interesGuardados = ['i01', 'i02']
       }
 
       setInteresesMock(interesGuardados)
@@ -51,32 +51,32 @@ export default function FeedCiudadanoPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-[#0D1730]">
+    <div className="min-h-screen bg-lienzo-hueso">
       {/* Columna central simulando mobile en desktop */}
-      <div className="w-full max-w-[420px] mx-auto min-h-screen bg-[#17264A] shadow-2xl relative flex flex-col">
-        
+      <div className="w-full max-w-[420px] mx-auto min-h-screen bg-lienzo-hueso relative flex flex-col">
+
         <CabeceraCiudadano />
         <FiltroIntereses interesesCount={interesesMock.length} />
 
         <main className="flex-1 overflow-y-auto p-4 md:p-6 pb-20">
           {isLoading ? (
             <div className="flex items-center justify-center h-40">
-               <div className="animate-pulse text-[#C89A3C] font-display font-bold uppercase tracking-widest text-sm">
+               <div className="animate-pulse t-label text-oro-filete">
                  Buscando novedades...
                </div>
             </div>
           ) : feed.length === 0 ? (
-            <div className="flex flex-col items-center justify-center text-center h-64 px-4 bg-[#14181F]/20 rounded-sm border border-[#14181F]/30">
-              <Inbox size={48} className="text-[#5A6472] mb-4 opacity-50" />
-              <h2 className="text-[#FBFAF7] font-display uppercase tracking-wider text-xl font-bold mb-2">
+            <div className="tarjeta-blanca flex flex-col items-center justify-center text-center h-64 px-4">
+              <Inbox size={48} className="text-tinta-tenue mb-4 opacity-50" />
+              <h2 className="text-tinta font-display uppercase tracking-wider text-xl font-bold mb-2">
                 Sin novedades
               </h2>
-              <p className="text-[#D6CFC0] font-body text-sm mb-6">
+              <p className="text-tinta-tenue font-body text-sm mb-6">
                 Todavía no hay nada publicado sobre los temas que elegiste.
               </p>
-              <Link 
+              <Link
                 href="/onboarding"
-                className="bg-[#C89A3C] hover:bg-[#b08735] text-[#14181F] font-body font-semibold px-6 py-2.5 rounded transition-colors"
+                className="bg-indigo-campo sombra-boton text-blanco-cosido font-body font-semibold px-6 py-2.5 rounded-full transition-opacity hover:opacity-90"
               >
                 Agregar más temas
               </Link>
@@ -84,10 +84,10 @@ export default function FeedCiudadanoPage() {
           ) : (
             <div className="flex flex-col">
               {feed.map((propuesta, idx) => (
-                <Link key={propuesta.id} href={`/detalle/${propuesta.id}`} className="block focus:outline-none focus:ring-2 focus:ring-[#C89A3C] rounded-sm">
-                  <EstandarteFeed 
-                    propuesta={propuesta} 
-                    destacado={idx === 0} 
+                <Link key={propuesta.id} href={`/detalle/${propuesta.id}`} className="block focus-visible:ring-oro rounded-[20px]">
+                  <EstandarteFeed
+                    propuesta={propuesta}
+                    destacado={idx === 0}
                   />
                 </Link>
               ))}

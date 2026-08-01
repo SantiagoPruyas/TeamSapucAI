@@ -22,24 +22,23 @@ export function Progreso({ paso, total = 3 }: ProgresoProps) {
             <div
               className="flex items-center justify-center w-7 h-7 rounded-full transition-all"
               style={{
-                borderRadius: '50%', // Sello y circle son los únicos círculos permitidos
                 border: activo
-                  ? '1px solid #C89A3C'
+                  ? '1px solid var(--indigo-campo)'
                   : completado
-                  ? '1px solid rgba(200,154,60,0.6)'
-                  : '1px solid rgba(255,255,255,0.2)',
+                  ? '1px solid var(--oro-filete)'
+                  : '1px solid var(--hilo)',
                 backgroundColor: activo
-                  ? '#EFEBE2'
+                  ? 'var(--indigo-campo)'
                   : completado
-                  ? 'rgba(239,235,226,0.3)'
+                  ? 'var(--lienzo)'
                   : 'transparent',
-                color: activo ? '#14181F' : completado ? '#EFEBE2' : 'rgba(255,255,255,0.4)',
+                color: activo ? 'var(--blanco-cosido)' : completado ? 'var(--oro-filete)' : 'var(--tinta-tenue)',
               }}
               aria-current={activo ? 'step' : undefined}
             >
               {completado ? (
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-                  <path d="M2 6l3 3 5-5" stroke="#C89A3C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M2 6l3 3 5-5" stroke="var(--oro-filete)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               ) : (
                 <span className="t-label text-xs" style={{ fontSize: '0.625rem' }}>{n}</span>
@@ -49,7 +48,7 @@ export function Progreso({ paso, total = 3 }: ProgresoProps) {
               <div
                 className="h-px flex-1 transition-all"
                 style={{
-                  backgroundColor: completado ? 'rgba(200,154,60,0.6)' : 'rgba(255,255,255,0.12)',
+                  backgroundColor: completado ? 'var(--oro-filete)' : 'var(--hilo)',
                 }}
               />
             )}

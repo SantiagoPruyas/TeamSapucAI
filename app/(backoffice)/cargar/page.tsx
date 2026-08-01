@@ -2,19 +2,21 @@
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Bot, CheckCircle2, AlertTriangle, Plus } from 'lucide-react'
-import { crearPropuesta, pedirSugerenciaIA, publicarPropuesta } from '@/lib/mock/api.backoffice'
-import { intereses } from '@/lib/mock/data'
+import { CheckCircle2 } from 'lucide-react'
+import { pedirSugerenciaIA } from '@/lib/mock/api.backoffice'
+import { SugerenciaIA } from '@/components/backoffice/SugerenciaIA'
 
 export default function CargaDePropuestaMockup() {
   const router = useRouter()
-  
+
   const [titulo, setTitulo] = useState('Proyecto de Ley para la Promoción de la Salud Mental en Escuelas')
   const [texto, setTexto] = useState('ARTÍCULO 1º.- Créase el Programa Provincial de Promoción de la Salud Mental en el Ámbito Educativo...')
-  
-  const [resumen, setResumen] = useState('Busca que todas las escuelas tengan programas de prevención y acompañamiento psicológico para estudiantes y familias. Se capacitará a docentes y se trabajará en conjunto con centros de salud.')
-  const [interesesSugeridos, setInteresesSugeridos] = useState<string[]>(['salud', 'educacion', 'ambiente'])
-  
+
+  const [resumen, setResumen] = useState('')
+  const [interesesSugeridos, setInteresesSugeridos] = useState<string[]>([])
+  const [sugerenciaLista, setSugerenciaLista] = useState(false)
+  const [sugerenciaAprobada, setSugerenciaAprobada] = useState(false)
+
   const [isAnalizando, setIsAnalizando] = useState(false)
   const [publicado, setPublicado] = useState(false)
 
@@ -24,100 +26,115 @@ export default function CargaDePropuestaMockup() {
       const sug = await pedirSugerenciaIA(texto)
       setResumen(sug.resumenIa)
       setInteresesSugeridos(sug.interesesSugeridos)
-    } catch(e) {
-      // ignore
+      setSugerenciaLista(true)
+      setSugerenciaAprobada(false)
+    } catch (e) {
+      console.error(e)
     } finally {
       setIsAnalizando(false)
     }
   }
 
+  const handleAceptarSugerencia = () => {
+    setSugerenciaAprobada(true)
+  }
+
+  const handleDescartarSugerencia = () => {
+    setSugerenciaLista(false)
+    setSugerenciaAprobada(false)
+    setResumen('')
+    setInteresesSugeridos([])
+  }
+
   const handleGuardar = async () => {
     setPublicado(true)
     setTimeout(() => {
-      router.push('/backoffice/panel/p1') // Mock redirect to panel
+      router.push('/panel/p02')
     }, 1500)
   }
 
   if (publicado) {
     return (
-      <div className="bg-[#FBFAF7] p-8 rounded shadow text-center h-[600px] flex flex-col justify-center">
-        <CheckCircle2 size={48} className="text-[#1E6B45] mx-auto mb-4" />
-        <h2 className="text-2xl font-bold mb-2">Propuesta Publicada</h2>
-        <p className="text-gray-600">Redirigiendo al panel...</p>
+      <div className="bg-lienzo-hueso p-8 rounded shadow text-center h-[600px] flex flex-col justify-center">
+        <CheckCircle2 size={48} style={{ color: 'var(--verde-bandera)' }} className="mx-auto mb-4" />
+        <h2 className="t-title text-tinta mb-2">Propuesta Publicada</h2>
+        <p className="t-body text-tinta-tenue">Redirigiendo al panel...</p>
       </div>
     )
   }
 
   return (
-    <div className="bg-[#FBFAF7] rounded shadow-sm min-h-screen">
-      <div className="border-b px-8 py-6 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-[#14181F]">Carga de propuesta</h1>
-        <span className="text-sm font-semibold text-gray-500">Paso 1 de 3</span>
+    <div className="bg-lienzo-hueso rounded shadow-sm min-h-screen">
+      <div className="border-b border-hilo px-8 py-6 flex justify-between items-center">
+        <h1 className="t-title text-tinta">Carga de propuesta</h1>
+        <span className="t-label text-tinta-tenue">Paso 1 de 3</span>
       </div>
 
       <div className="p-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Izquierda: Inputs */}
         <div className="flex flex-col gap-6">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Título</label>
+            <label className="block t-label text-tinta-tenue mb-2">Título</label>
             <input
               type="text"
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
-              className="w-full bg-white border border-gray-300 rounded p-3 text-sm focus:ring-1 outline-none"
+              className="w-full bg-white border border-hilo rounded p-3 t-body text-tinta focus:ring-1 focus:ring-oro-filete outline-none"
             />
           </div>
 
           <div className="flex-1 flex flex-col">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Texto del proyecto</label>
+            <label className="block t-label text-tinta-tenue mb-2">Texto del proyecto</label>
             <textarea
               value={texto}
               onChange={(e) => setTexto(e.target.value)}
-              className="w-full flex-1 min-h-[300px] bg-white border border-gray-300 rounded p-3 text-sm resize-none focus:ring-1 outline-none"
+              className="w-full flex-1 min-h-[300px] bg-white border border-hilo rounded p-3 t-body text-tinta resize-none focus:ring-1 focus:ring-oro-filete outline-none"
             />
           </div>
+
+          <button
+            onClick={handleAnalizar}
+            disabled={isAnalizando}
+            className="self-start px-6 py-2.5 rounded t-label text-blanco-cosido bg-indigo-campo hover:bg-indigo-nocturno transition-colors disabled:opacity-60"
+          >
+            {isAnalizando ? 'Analizando con IA...' : 'Pedir sugerencia de IA'}
+          </button>
         </div>
 
         {/* Derecha: IA */}
         <div className="flex flex-col gap-6">
-          <div className="bg-[#F2F9F9] rounded border border-[#E0F2F1] p-6 relative h-full flex flex-col">
-            <label className="block text-sm font-bold text-teal-800 mb-4">Resumen sugerido por IA</label>
-            
-            <textarea
-              value={resumen}
-              onChange={e => setResumen(e.target.value)}
-              className="w-full flex-1 bg-transparent border-none p-0 text-sm resize-none text-teal-900 outline-none leading-relaxed"
+          {sugerenciaLista ? (
+            <SugerenciaIA
+              resumen={resumen}
+              onResumenChange={setResumen}
+              interesesSugeridos={interesesSugeridos}
+              onAceptar={handleAceptarSugerencia}
+              onDescartar={handleDescartarSugerencia}
             />
-            
-            <div className="flex justify-end mt-4">
-              <button className="text-sm text-teal-700 font-bold hover:underline">Editar</button>
+          ) : (
+            <div className="panel-lienzo p-6 flex-1 flex items-center justify-center text-center">
+              <p className="t-body text-tinta-tenue">
+                Pedí la sugerencia de IA para obtener un resumen en criollo y categorías propuestas. Vas a poder editarlo y aprobarlo antes de continuar.
+              </p>
             </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-bold text-teal-800 mb-3">Categorías sugeridas por IA</label>
-            <div className="flex items-center gap-2 flex-wrap">
-              {interesesSugeridos.map(id => {
-                const cat = intereses.find(i => i.id === id)
-                return cat ? (
-                  <span key={id} className="bg-teal-600 text-white text-xs px-3 py-1.5 rounded-full font-semibold">
-                    {cat.nombre}
-                  </span>
-                ) : null
-              })}
-              <button className="text-teal-700 text-sm font-semibold flex items-center gap-1 ml-2">
-                <Plus size={16} /> Agregar categoría
-              </button>
-            </div>
-          </div>
+          )}
+          {sugerenciaAprobada && (
+            <p className="t-label" style={{ color: 'var(--verde-bandera)' }}>
+              Sugerencia aprobada — lista para publicar.
+            </p>
+          )}
         </div>
       </div>
 
-      <div className="border-t px-8 py-6 flex items-center justify-between bg-white mt-auto">
-        <button className="px-6 py-2 border border-gray-300 rounded text-sm font-semibold text-gray-700 hover:bg-gray-50">
+      <div className="border-t border-hilo px-8 py-6 flex items-center justify-between bg-white mt-auto">
+        <button className="px-6 py-2 border border-hilo rounded t-label text-tinta hover:bg-lienzo-hueso">
           Guardar borrador
         </button>
-        <button onClick={handleGuardar} className="px-8 py-2 bg-[#17264A] text-white rounded text-sm font-semibold hover:bg-blue-900">
+        <button
+          onClick={handleGuardar}
+          disabled={!sugerenciaAprobada}
+          className="px-8 py-2 bg-indigo-campo text-blanco-cosido rounded t-label hover:bg-indigo-nocturno disabled:opacity-50"
+        >
           Siguiente
         </button>
       </div>

@@ -8,21 +8,21 @@ interface FiltroInteresesProps {
 
 export function FiltroIntereses({ interesesCount }: FiltroInteresesProps) {
   return (
-    <div className="w-full px-6 py-4 flex items-center justify-between text-[#FBFAF7] border-b border-[#14181F]/10">
+    <div className="w-full px-6 py-4 flex items-center justify-between text-tinta border-b border-hilo">
       <div className="flex items-center gap-3">
-        <Filter size={18} className="text-[#C89A3C]" />
+        <Filter size={18} className="text-oro-filete" />
         <div>
-          <p className="font-display uppercase tracking-widest text-xs font-bold text-[#D6CFC0]">
+          <p className="t-label text-tinta-tenue">
             Feed Filtrado
           </p>
-          <p className="font-body text-sm">
+          <p className="t-body text-tinta text-sm">
             Mostrando {interesesCount === 0 ? "todos los temas" : `${interesesCount} temas elegidos`}
           </p>
         </div>
       </div>
-      <Link 
-        href="/onboarding" 
-        className="text-[#C89A3C] font-display uppercase tracking-widest text-xs font-bold hover:underline"
+      <Link
+        href="/onboarding"
+        className="text-oro-filete t-label hover:underline"
       >
         Cambiar
       </Link>

@@ -13,7 +13,7 @@ interface PasoIdentidadProps {
  * PasoIdentidad — Paso 2: DNI + departamento.
  * DNI: inputMode numeric, validación suave, error en criollo.
  * Departamento: selector buscable con los 25 de Corrientes.
- * Los campos van sobre panel de Lienzo (Regla del Lienzo).
+ * Los campos van sobre tarjeta blanca flotante (dirección "El Puente").
  */
 export function PasoIdentidad({ departamentos, onSiguiente, onAnterior }: PasoIdentidadProps) {
   const [dni, setDni] = useState('')
@@ -53,22 +53,21 @@ export function PasoIdentidad({ departamentos, onSiguiente, onAnterior }: PasoId
     <div className="flex flex-col flex-1 px-6 pt-4 pb-6 gap-6">
       {/* Título de sección — Headline, no Display (ya se usó en paso 1) */}
       <div>
-        <h2 className="t-headline" style={{ color: '#FBFAF7' }}>
+        <h2 className="t-headline text-indigo-campo">
           Contanos quién sos
         </h2>
-        <p className="t-body" style={{ color: 'rgba(251,250,247,0.6)', marginTop: '0.5rem', fontSize: '0.9375rem' }}>
+        <p className="t-body text-tinta-tenue mt-2 text-[0.9375rem]">
           Solo para saber que sos correntino/a.
         </p>
       </div>
 
-      {/* Panel de lienzo — todos los campos viven acá */}
-      <div className="panel-lienzo flex flex-col gap-5">
+      {/* Tarjeta blanca flotante — todos los campos viven acá */}
+      <div className="tarjeta-blanca flex flex-col gap-5">
         {/* DNI */}
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="input-dni"
-            className="t-label"
-            style={{ color: '#5A6472' }}
+            className="t-label text-tinta-tenue"
           >
             Número de DNI
           </label>
@@ -88,30 +87,12 @@ export function PasoIdentidad({ departamentos, onSiguiente, onAnterior }: PasoId
             placeholder="Ej: 32456789"
             aria-describedby={dniError ? 'dni-error' : undefined}
             aria-invalid={!!dniError}
-            style={{
-              height: '48px',
-              backgroundColor: '#FBFAF7',
-              color: '#14181F',
-              border: dniError
-                ? '1px solid #A82418'
-                : '1px solid #D6CFC0',
-              borderRadius: '2px',
-              padding: '0 0.875rem',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '1rem',
-              outline: 'none',
-              transition: 'border-color 150ms',
-              width: '100%',
-            }}
-            onFocus={e => {
-              e.currentTarget.style.borderColor = '#C89A3C'
-            }}
-            onBlurCapture={e => {
-              if (!dniError) e.currentTarget.style.borderColor = '#D6CFC0'
-            }}
+            className={`h-12 w-full rounded-[14px] px-3.5 font-sans text-base outline-none bg-lienzo text-tinta transition-colors ${
+              dniError ? 'border border-cochinilla' : 'border border-hilo focus:border-oro-filete'
+            }`}
           />
           {dniError && (
-            <p id="dni-error" className="t-label" style={{ color: '#A82418', letterSpacing: '0', textTransform: 'none', fontSize: '0.8125rem', fontFamily: 'var(--font-sans)', fontWeight: 400 }}>
+            <p id="dni-error" className="t-label text-cochinilla tracking-normal normal-case text-[0.8125rem] font-sans font-normal">
               {dniError}
             </p>
           )}
@@ -121,8 +102,7 @@ export function PasoIdentidad({ departamentos, onSiguiente, onAnterior }: PasoId
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="btn-departamento"
-            className="t-label"
-            style={{ color: '#5A6472' }}
+            className="t-label text-tinta-tenue"
           >
             Departamento
           </label>
@@ -133,22 +113,9 @@ export function PasoIdentidad({ departamentos, onSiguiente, onAnterior }: PasoId
               onClick={() => setAbierto(!abierto)}
               aria-haspopup="listbox"
               aria-expanded={abierto}
-              style={{
-                height: '48px',
-                width: '100%',
-                backgroundColor: '#FBFAF7',
-                color: departamentoSeleccionado ? '#14181F' : '#5A6472',
-                border: '1px solid #D6CFC0',
-                borderRadius: '2px',
-                padding: '0 0.875rem',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '1rem',
-                textAlign: 'left',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                cursor: 'pointer',
-              }}
+              className={`h-12 w-full rounded-[14px] px-3.5 font-sans text-base text-left flex items-center justify-between border border-hilo bg-lienzo cursor-pointer ${
+                departamentoSeleccionado ? 'text-tinta' : 'text-tinta-tenue'
+              }`}
             >
               <span>{departamentoSeleccionado?.nombre ?? 'Elegí tu departamento'}</span>
               <svg
@@ -156,7 +123,7 @@ export function PasoIdentidad({ departamentos, onSiguiente, onAnterior }: PasoId
                 style={{ transform: abierto ? 'rotate(180deg)' : 'none', transition: 'transform 150ms', flexShrink: 0 }}
                 aria-hidden
               >
-                <path d="M4 6l4 4 4-4" stroke="#5A6472" strokeWidth="1.5" strokeLinecap="round" />
+                <path d="M4 6l4 4 4-4" stroke="var(--tinta-tenue)" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </button>
 
@@ -164,45 +131,22 @@ export function PasoIdentidad({ departamentos, onSiguiente, onAnterior }: PasoId
               <div
                 role="listbox"
                 aria-label="Departamentos de Corrientes"
-                style={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: 0,
-                  right: 0,
-                  zIndex: 50,
-                  backgroundColor: '#FBFAF7',
-                  border: '1px solid #D6CFC0',
-                  borderTop: 'none',
-                  borderRadius: '0 0 2px 2px',
-                  maxHeight: '240px',
-                  overflowY: 'auto',
-                }}
+                className="absolute top-full left-0 right-0 z-50 bg-lienzo-hueso border border-hilo border-t-0 rounded-b-[14px] max-h-60 overflow-y-auto sombra-suave"
               >
                 {/* Campo de búsqueda */}
-                <div style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid #D6CFC0' }}>
+                <div className="p-2 px-3 border-b border-hilo">
                   <input
                     type="text"
                     value={busqueda}
                     onChange={e => setBusqueda(e.target.value)}
                     placeholder="Buscar..."
                     aria-label="Buscar departamento"
-                    style={{
-                      width: '100%',
-                      height: '36px',
-                      backgroundColor: '#EFEBE2',
-                      color: '#14181F',
-                      border: '1px solid #D6CFC0',
-                      borderRadius: '2px',
-                      padding: '0 0.75rem',
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '0.9375rem',
-                      outline: 'none',
-                    }}
+                    className="w-full h-9 bg-lienzo text-tinta border border-hilo rounded-[10px] px-3 font-sans text-[0.9375rem] outline-none"
                   />
                 </div>
 
                 {departamentosFiltrados.length === 0 ? (
-                  <div style={{ padding: '1rem', color: '#5A6472', fontFamily: 'var(--font-sans)', fontSize: '0.9375rem' }}>
+                  <div className="p-4 text-tinta-tenue font-sans text-[0.9375rem]">
                     No encontramos ese departamento
                   </div>
                 ) : (
@@ -216,22 +160,9 @@ export function PasoIdentidad({ departamentos, onSiguiente, onAnterior }: PasoId
                         setBusqueda('')
                         setAbierto(false)
                       }}
-                      style={{
-                        display: 'block',
-                        width: '100%',
-                        padding: '0.75rem 0.875rem',
-                        textAlign: 'left',
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '0.9375rem',
-                        color: '#14181F',
-                        backgroundColor: d.id === departamentoId ? '#EFEBE2' : 'transparent',
-                        borderTop: 'none',
-                        borderRight: 'none',
-                        borderBottom: 'none',
-                        borderLeft: d.id === departamentoId ? '3px solid #17264A' : '3px solid transparent',
-                        cursor: 'pointer',
-                        transition: 'background-color 100ms',
-                      }}
+                      className={`block w-full text-left py-3 px-3.5 font-sans text-[0.9375rem] text-tinta cursor-pointer transition-colors border-l-[3px] ${
+                        d.id === departamentoId ? 'bg-lienzo border-indigo-campo' : 'border-transparent hover:bg-lienzo'
+                      }`}
                     >
                       {d.nombre}
                     </button>
@@ -242,7 +173,7 @@ export function PasoIdentidad({ departamentos, onSiguiente, onAnterior }: PasoId
           </div>
         </div>
 
-        <p className="t-label" style={{ color: '#77808F', borderTop: '1px solid #D6CFC0', paddingTop: '0.75rem', letterSpacing: '0', textTransform: 'none', fontSize: '0.75rem', fontFamily: 'var(--font-sans)', fontWeight: 400 }}>
+        <p className="t-label text-gris-pizarra border-t border-hilo pt-3 tracking-normal normal-case text-xs font-sans font-normal">
           datos de demostración
         </p>
       </div>
@@ -251,19 +182,7 @@ export function PasoIdentidad({ departamentos, onSiguiente, onAnterior }: PasoId
       <div className="mt-auto flex gap-3">
         <button
           onClick={onAnterior}
-          style={{
-            height: '52px',
-            flex: '0 0 auto',
-            width: '52px',
-            backgroundColor: 'transparent',
-            color: '#FBFAF7',
-            border: '1px solid rgba(255,255,255,0.2)',
-            borderRadius: '2px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-          }}
+          className="h-13 w-13 shrink-0 rounded-full flex items-center justify-center border border-indigo-campo text-indigo-campo cursor-pointer"
           aria-label="Volver al paso anterior"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
@@ -276,25 +195,11 @@ export function PasoIdentidad({ departamentos, onSiguiente, onAnterior }: PasoId
           onClick={handleSiguiente}
           disabled={!puedeAvanzar}
           title={!puedeAvanzar ? 'Completá el DNI y elegí tu departamento para continuar' : undefined}
-          style={{
-            height: '52px',
-            flex: 1,
-            backgroundColor: puedeAvanzar ? '#EFEBE2' : 'rgba(239,235,226,0.15)',
-            color: puedeAvanzar ? '#14181F' : 'rgba(251,250,247,0.4)',
-            border: `1px solid ${puedeAvanzar ? '#C89A3C' : 'rgba(255,255,255,0.1)'}`,
-            borderRadius: '2px',
-            fontFamily: 'var(--font-display)',
-            fontWeight: 600,
-            fontSize: '0.8125rem',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            cursor: puedeAvanzar ? 'pointer' : 'not-allowed',
-            transition: 'all 150ms',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '0.5rem',
-          }}
+          className={`h-13 flex-1 rounded-full font-display font-semibold text-[0.8125rem] tracking-widest uppercase flex items-center justify-center gap-2 transition-all ${
+            puedeAvanzar
+              ? 'bg-indigo-campo text-blanco-cosido sombra-boton cursor-pointer'
+              : 'bg-hilo text-tinta-tenue cursor-not-allowed'
+          }`}
         >
           Seguir
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
@@ -304,7 +209,7 @@ export function PasoIdentidad({ departamentos, onSiguiente, onAnterior }: PasoId
       </div>
 
       {!puedeAvanzar && (dni || departamentoId) && (
-        <p className="t-label" style={{ color: '#77808F', textAlign: 'center', letterSpacing: 0, textTransform: 'none', fontSize: '0.8125rem', fontFamily: 'var(--font-sans)', fontWeight: 400, marginTop: '-0.5rem' }}>
+        <p className="t-label text-gris-pizarra text-center tracking-normal normal-case text-[0.8125rem] font-sans font-normal -mt-2">
           {!validarDni(dni) ? 'Elegí tu departamento para continuar' : 'Completá tu DNI para continuar'}
         </p>
       )}
