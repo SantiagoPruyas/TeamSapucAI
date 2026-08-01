@@ -28,7 +28,7 @@ export function PasoBienvenida({ onSiguiente }: PasoBienvenidaProps) {
         </div>
 
         <h1 className="t-display" style={{ color: '#FBFAF7' }}>
-          Sapucái
+          SapucAI
         </h1>
 
         <p className="t-headline" style={{ color: 'rgba(251,250,247,0.7)', fontSize: '1.125rem', fontWeight: 400, letterSpacing: '0', textTransform: 'none', fontFamily: 'var(--font-sans)' }}>

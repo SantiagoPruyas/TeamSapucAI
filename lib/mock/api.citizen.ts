@@ -8,7 +8,8 @@
  */
 
 import { delay, quizasFallar, vacio } from './delay'
-import type { Interes, Departamento, Perfil } from '../types'
+import type { Interes, Departamento, Perfil, Propuesta } from '../types'
+import { propuestas, intereses } from './data'
 
 /* ---- Intereses del catálogo cerrado ---- */
 const INTERESES: Interes[] = [
@@ -72,3 +73,30 @@ export async function guardarPerfil(perfil: Omit<Perfil, 'id'>): Promise<Perfil>
   quizasFallar()
   return { ...perfil, id: `perfil-mock-${Date.now()}` }
 }
+
+export async function getFeed(interesesDelUsuario: string[]): Promise<Propuesta[]> {
+  await delay(800)
+  quizasFallar()
+  
+  // Filtramos las propuestas por los intereses del usuario
+  // Si no hay intereses (caso de onboarding saltado), o el usuario no tiene intereses, tal vez queramos mostrar todo o nada.
+  // El requerimiento dice: "El feed está filtrado por los intereses del usuario y eso se dice explícitamente".
+  let filtradas = propuestas.filter(p => p.estado === 'publicada' || p.estado === 'cerrada' || p.estado === 'procesando')
+  
+  if (interesesDelUsuario.length > 0) {
+    filtradas = filtradas.filter(p => p.intereses.some(i => interesesDelUsuario.includes(i)))
+  } else {
+    // Si no tiene intereses elegidos, forzamos array vacío para el estado vacío
+    filtradas = []
+  }
+
+  // Orden simulado: las más recientes arriba (asumimos que 'p1' es más viejo que 'p2' pero mockearemos revirtiendo)
+  // Como es mock, simplemente revertimos la lista para que las últimas estén primeras
+  const resultado = [...filtradas].reverse().map(p => ({
+    ...p,
+    interesesDetalle: p.intereses.map(id => intereses.find(i => i.id === id)).filter(Boolean) as Interes[]
+  }))
+  
+  return vacio(resultado as unknown as Propuesta[]) // Hacemos un cast para evitar cambiar el contrato principal
+}
+

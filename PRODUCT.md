@@ -28,7 +28,7 @@ su gente, y contestar sin que le lean una barbaridad.
 
 ## Product Purpose
 
-Sapucái reconecta al ciudadano correntino con la Cámara de Diputados de la Provincia de Corrientes
+SapucAI reconecta al ciudadano correntino con la Cámara de Diputados de la Provincia de Corrientes
 en las dos direcciones. La información legislativa ya es pública; el problema es de **distribución
 y traducción**. La app avisa al ciudadano de lo que se está tratando en los temas que eligió, se lo
 explica en criollo, le deja gritar su opinión en una nota de voz de 15 segundos, y le devuelve la
@@ -39,7 +39,7 @@ no cierra es una app de encuestas más.
 
 ## Positioning
 
-Cualquier app puede recibir opiniones. Sapucái **devuelve una respuesta**, y la entrada es la voz,
+Cualquier app puede recibir opiniones. SapucAI **devuelve una respuesta**, y la entrada es la voz,
 no un formulario. Un *sapucai* es el grito guaraní: acá es literal, una nota de voz. La IA traduce
 el lenguaje legislativo al criollo para el ciudadano, y traduce 500 gritos en 5 argumentos para el
 diputado. Ese doble sentido de traducción es lo que un competidor no puede copiar y pegar.
@@ -81,7 +81,7 @@ siempre, excepto el panel del diputado que se diseña para pantalla grande.
 
 ## Brand Commitments
 
-- **Nombre:** Sapucái. Del guaraní *sapukái*, el grito. La palabra es el producto: la acción central
+- **Nombre:** SapucAI. Del guaraní *sapukái*, el grito. La palabra es el producto: la acción central
   de la app se llama "mandar un sapucai".
 - **Ámbito:** Cámara de Diputados de la Provincia de Corrientes. Institución real, caso real.
 - **Voz:** el criollo correntino, no el lenguaje legislativo ni el lenguaje de producto. El resumen

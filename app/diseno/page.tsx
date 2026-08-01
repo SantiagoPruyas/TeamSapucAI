@@ -7,7 +7,7 @@ export default function DisenoPage() {
   return (
     <div className="container mx-auto p-8 space-y-12">
       <div className="space-y-4">
-        <h1 className="font-display text-4xl font-bold tracking-tight text-primary">Guía de Diseño Sapucái</h1>
+        <h1 className="font-display text-4xl font-bold tracking-tight text-primary">Guía de Diseño SapucAI</h1>
         <p className="text-muted-foreground text-lg">Galería de tokens, tipografías y componentes.</p>
       </div>
 

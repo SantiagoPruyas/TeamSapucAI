@@ -1,4 +1,4 @@
-# Sapucái — Documento Maestro del Proyecto
+# SapucAI — Documento Maestro del Proyecto
 
 > **Equipo SapucAI · Grupo 23 · HackIAthon Devlights 2026**
 > Temática: **Modernización del Sector Público**
@@ -26,7 +26,7 @@ El vínculo entre el ciudadano correntino y su representante hoy está roto en l
 
 ## 2. La solución en una frase
 
-> **Sapucái es la app donde el correntino se entera de lo que se está tratando en la Cámara,
+> **SapucAI es la app donde el correntino se entera de lo que se está tratando en la Cámara,
 > grita su opinión en 15 segundos, y recibe la respuesta de su diputado.**
 
 Un *sapucai* es el grito guaraní. Acá es literal: **una nota de voz.** El ciudadano no escribe un
@@ -41,7 +41,7 @@ La IA hace el trabajo pesado en las dos puntas:
 
 ## 3. El ciclo (esto ES el producto)
 
-El diferencial de Sapucái no es el feed ni el audio. Es que **el ciclo se cierra**.
+El diferencial de SapucAI no es el feed ni el audio. Es que **el ciclo se cierra**.
 Cualquier app puede recibir opiniones. La nuestra devuelve una respuesta.
 
 ```

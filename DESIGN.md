@@ -1,12 +1,12 @@
 ---
-name: Sapucái
+name: SapucAI
 description: El estandarte cívico correntino — campos de tela saturada, filete dorado, y un sello cuando el diputado responde.
 ---
 
 <!-- SEED: establecido con el equipo antes de implementar. Volver a correr /impeccable document
      cuando exista código, para capturar los tokens reales y generar el sidecar. -->
 
-# Design System: Sapucái
+# Design System: SapucAI
 
 ## Overview
 

@@ -3,7 +3,7 @@ import { fontDisplay, fontBody } from "@/lib/fonts";
 import "./globals.css";
 import { DevSwitcher } from "@/components/dev/DevSwitcher";
 export const metadata: Metadata = {
-  title: "Sapucái",
+  title: "Sapucai",
   description: "El estandarte cívico correntino",
 };
 
