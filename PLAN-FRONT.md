@@ -985,9 +985,9 @@ Cada una llena su fila al cerrar la sesión. **Una sesión sin fila no está cer
 | S1L | Tokens y `/diseno` | Lara | ⬜ | ⬜ | ⬜ | Malen (bloqueante) | |
 | S1M | Mock data + DevSwitcher | Malen | ✅ | n/a | n/a | Lara | Completado |
 | S2L | Onboarding | Lara | ⬜ | ⬜ | ⬜ | Malen | tiempo de onboarding: ___ s |
-| S2M | Shell + carga de propuesta | Malen | ⬜ | ⬜ | ⬜ | Lara | |
+| S2M | Shell + carga de propuesta | Malen | ✅ | ⬜ | ⬜ | Lara | Completado |
 | S3L | Feed | Lara | ⬜ | ⬜ | ⬜ | Malen | |
-| S3M | Panel del diputado | Malen | ⬜ | ⬜ | ⬜ | Lara | prueba de los 2 metros: ⬜ |
+| S3M | Panel del diputado | Malen | ✅ | ⬜ | ⬜ | Lara | prueba de los 2 metros: ✅ |
 | S4L | Detalle + respuesta | Lara | ⬜ | ⬜ | ⬜ | Malen | |
 | S4M | Sapucais + editor de respuesta | Malen | ⬜ | ⬜ | ⬜ | Lara | |
 | S5L | Grabador | Lara | ⬜ | ⬜ | ⬜ | Malen | probado en Android real: ⬜ |
