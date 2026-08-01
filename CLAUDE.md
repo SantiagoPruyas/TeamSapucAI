@@ -21,17 +21,19 @@ responde con una nota de voz (*sapucai*), y recibe la respuesta pública del dip
 
 - **Next.js 15 App Router** — fullstack, un solo deploy. Server Actions como backend.
 - **Supabase** — Postgres, Auth (RLS), Storage (audios), Realtime.
-- **Gemini** — audio → texto (`es-AR`), entrada multimodal.
-- **Amazon Bedrock (Claude)** — resumen, categorización, moderación, postura, agrupación.
+- **Gemini** (`@google/genai`) — **todas** las tareas de IA: transcripción de audio (`es-AR`,
+  entrada multimodal), resumen, categorización, moderación + postura, agrupación de argumentos y
+  el chat acotado sobre una propuesta.
 - **AWS Amplify Hosting** — deploy.
 
 ## Reglas no negociables
 
-1. **Bedrock no hace speech-to-text.** La transcripción es **Gemini** (`@google/genai`, audio como
-   entrada multimodal). No propongas transcribir con Bedrock ni con Amazon Transcribe — Transcribe
-   está descartado.
-2. **Ninguna credencial de AWS ni la service role de Supabase toca el cliente.** Todo lo que
-   lleve `NEXT_PUBLIC_` es público. AWS y service role van solo en Server Actions / Route Handlers.
+1. **No usamos Amazon Bedrock ni ningún modelo de Anthropic vía AWS — no tenemos acceso
+   habilitado.** Todas las tareas de IA del proyecto, sin excepción, pasan por **Gemini**
+   (`@google/genai`). No propongas Bedrock, Claude, ni Amazon Transcribe para nada de esto.
+2. **Ninguna credencial toca el cliente.** La service role de Supabase y `GEMINI_API_KEY` se usan
+   **solo** en Server Actions y Route Handlers. Cualquier variable con prefijo `NEXT_PUBLIC_` es
+   pública y viaja al navegador.
 3. **Cada tarea de IA es un prompt separado** en `/lib/ai/prompts/`, con salida JSON estructurada.
    No hay prompt maestro que haga varias cosas.
 4. **Las categorías salen de un catálogo cerrado.** La IA elige de una lista, no inventa etiquetas

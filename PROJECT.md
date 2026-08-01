@@ -123,43 +123,43 @@ cambia en silencio en tu rama.
                                    │
                    Server Actions / Route Handlers
                                    │
-        ┌──────────────────────────┼──────────────────────────┐
-        ▼                          ▼                          ▼
-┌───────────────┐        ┌──────────────────┐      ┌────────────────────┐
-│   SUPABASE    │        │   GEMINI API     │      │  AMAZON BEDROCK    │
-│               │        │  (multimodal)    │      │  (Claude)          │
-│ · Postgres    │        │  audio → texto   │      │                    │
-│ · Auth (RLS)  │        │  es-AR           │      │ · resumir ley      │
-│ · Storage     │        └──────────────────┘      │ · categorizar      │
-│   (audios)    │                                  │ · moderar + postura│
-│ · Realtime    │                                  │ · agrupar argumentos│
-└───────────────┘                                  │ · responder dudas  │
-                                                   └────────────────────┘
+        ┌──────────────────────────┴──────────────────────────┐
+        ▼                                                      ▼
+┌───────────────┐                                   ┌───────────────────────┐
+│   SUPABASE    │                                   │      GEMINI API       │
+│               │                                   │      (multimodal)     │
+│ · Postgres    │                                   │                       │
+│ · Auth (RLS)  │                                   │ · transcribir audio   │
+│ · Storage     │                                   │ · resumir ley         │
+│   (audios)    │                                   │ · categorizar         │
+│ · Realtime    │                                   │ · moderar + postura   │
+└───────────────┘                                   │ · agrupar argumentos  │
+                                                     │ · responder dudas     │
+                                                     └───────────────────────┘
                               DEPLOY: AWS Amplify Hosting
 ```
 
 ### 6.2 Por qué cada pieza
 
 - **Next.js App Router, un solo servicio.** No hay backend separado. Las Server Actions escriben
-  en Supabase y llaman a AWS y a Gemini con las credenciales del servidor. Nada de claves de AWS ni
-  la API key de Gemini en el browser, nunca. Un solo deploy en Amplify, cero CORS, cero coordinación
-  entre repos.
+  en Supabase y llaman a Gemini con las credenciales del servidor. Nada de claves en el browser,
+  nunca. Un solo deploy en Amplify, cero CORS, cero coordinación entre repos.
 
 - **Supabase.** Es Postgres, igual que el RDS de la consigna, así que el esquema es portable.
   Nos regala tres cosas que en 24hs no queremos construir: Auth con sesiones, Storage para los
   audios, y Realtime. **Realtime es un regalo para la demo**: el panel del diputado se actualiza
   solo mientras el público manda sapucais desde sus celulares. Eso se vende solo.
 
-- **Gemini, no Bedrock, para el audio.**
-  ⚠️ **Bedrock no hace speech-to-text.** No hay modelo de transcripción ahí. La transcripción la
-  hace **Gemini**, que acepta el audio como entrada multimodal y devuelve el texto en una sola
-  llamada HTTP: otro SDK (`@google/genai`), otra credencial (`GEMINI_API_KEY`), y ningún job
-  asíncrono que haya que ir a buscar después. Descubrir esto el sábado a la noche cuesta tres horas.
-  Descubrirlo ahora cuesta cero.
+- **Gemini para todo, no Bedrock.** El equipo no tiene acceso habilitado a Amazon Bedrock, así que
+  **las seis tareas de IA del proyecto pasan por Gemini** (`@google/genai`): transcripción de audio
+  (acepta el audio como entrada multimodal, una sola llamada HTTP, sin job asíncrono que haya que
+  ir a buscar después) **y** los cinco prompts de texto — resumir, categorizar, moderar + postura,
+  agrupar argumentos y responder dudas. Una sola credencial (`GEMINI_API_KEY`), un solo SDK, cero
+  superficie de AWS que habilitar para IA.
 
-- **Bedrock (Claude) para todo lo demás.** Cinco trabajos, **cinco prompts separados**. No hay un
-  "prompt maestro" que haga todo junto: cada tarea tiene su prompt, su formato de salida y su
-  manejo de error. Un prompt que hace cinco cosas falla en las cinco.
+- **Cinco prompts de texto separados, un solo proveedor.** No hay un "prompt maestro" que haga
+  todo junto: cada tarea tiene su propio prompt, su formato de salida y su manejo de error. Un
+  prompt que hace cinco cosas falla en las cinco — eso no cambia por usar un solo proveedor.
 
 ### 6.3 Estructura de carpetas
 
@@ -175,8 +175,7 @@ cambia en silencio en tu rama.
 /lib
   /supabase           → clientes (browser / server), tipos generados
   /ai
-    bedrock.ts        → cliente único de Bedrock
-    gemini.ts         → cliente de Gemini (transcripción audio → texto)
+    gemini.ts         → cliente único de Gemini (transcripción y generación de texto/JSON)
     prompts/          → UN archivo por tarea de IA (ver §8)
   /domain             → lógica de negocio pura, testeable sin red
 /supabase
@@ -228,7 +227,7 @@ nunca prosa libre — el código tiene que poder parsear la salida sin adivinar.
 **Reglas para las cinco:**
 - Las categorías salen de un **catálogo cerrado**. La IA elige de una lista, no inventa etiquetas.
   Si inventa, el matcheo con los intereses del usuario se rompe.
-- Si Bedrock o Gemini fallan o tardan, **la app no se cae**: la propuesta queda sin resumen y el
+- Si Gemini falla o tarda, **la app no se cae**: la propuesta queda sin resumen y el
   sapucai queda "pendiente de análisis" (sin transcripción o sin postura). Estado degradado, no
   error 500.
 - El prompt #5 tiene prohibido responder con conocimiento general. Solo con el texto de esa
@@ -251,7 +250,7 @@ lo que no era.
 - [ ] Detalle de propuesta con el resumen en criollo
 - [ ] Grabar audio en el navegador y subirlo a Supabase Storage
 - [ ] Transcripción con Gemini
-- [ ] Moderación + clasificación de postura con Bedrock
+- [ ] Moderación + clasificación de postura con Gemini
 - [ ] Panel del diputado: termómetro a favor/en contra + lista de sapucais
 - [ ] **Respuesta pública del diputado**
 - [ ] **Notificación in-app (campanita) al ciudadano cuando el diputado responde**
@@ -362,7 +361,7 @@ Cuatro carriles con poco solapamiento. Cada uno es dueño de sus archivos.
 |--------|-----------|------------|
 | **A — Cimientos y datos** | `/supabase`, `/lib/supabase`, Auth, RLS, seed | Que todos puedan leer y escribir datos reales desde la hora 3 |
 | **B — Ciudadano** | `/app/(citizen)`, `/components/citizen` | Onboarding, feed, detalle, grabador de audio |
-| **C — IA** | `/lib/ai`, los 5 prompts, Gemini, Bedrock | Funciones puras: entra texto/audio, sale JSON. Testeables sin UI. |
+| **C — IA** | `/lib/ai`, los 5 prompts, Gemini | Funciones puras: entra texto/audio, sale JSON. Testeables sin UI. |
 | **D — Backoffice y deploy** | `/app/(backoffice)`, Amplify, variables de entorno | Carga de propuestas, panel, respuesta, y que el deploy exista temprano |
 
 **Reglas de convivencia:**
@@ -437,4 +436,6 @@ Cada cambio de rumbo se anota acá, con fecha y motivo. Esto es la memoria del p
 | 2026-08-01 | Dirección visual cerrada: **"El Estandarte"**, documentada en [DESIGN.md](DESIGN.md) | Elegida con el flujo de dirección de la skill `impeccable` (seed `852e285a`), sobre siete mundos derivados de la cultura correntina. Evita el default de "app cívica gris". No se reabre. |
 | 2026-08-01 | Stack de UI del front: Tailwind v4 + shadcn/ui, tokens propios de DESIGN.md | Velocidad y accesibilidad de base, con identidad propia vía tokens. Sin GSAP ni librerías de mapas. |
 | 2026-08-01 | Reparto del front: Lara → ciudadano, Malen → backoffice | Territorios de archivos disjuntos. Ver §2 de PLAN-FRONT.md. |
+| 2026-08-01 | ~~Bedrock (Claude) para resumir, categorizar, moderar+postura, agrupar y chat~~ — **revertida el mismo día, ver la última fila** | Menos superficie AWS que habilitar, y Bedrock seguía sin hacer speech-to-text. La conclusión sigue siendo válida; el proveedor elegido para estas cinco tareas ya no es Bedrock. |
 | 2026-08-01 | **Gemini reemplaza a Amazon Transcribe** para audio→texto | Una sola llamada HTTP con el audio como entrada multimodal, sin job asíncrono ni permisos IAM extra. Transcribe queda descartado. Bedrock (Claude) sigue haciendo las otras cuatro tareas. |
+| 2026-08-01 | **Gemini reemplaza también a Bedrock para las cinco tareas de texto** (resumir, categorizar, moderar+postura, agrupar, chat) — ya no se usa Amazon Bedrock ni ningún modelo de Anthropic en el proyecto | El equipo no tiene acceso habilitado a Bedrock en la cuenta de la hackatón. Gemini hace las seis tareas de IA del proyecto (transcripción + las cinco de texto) con una sola credencial y un solo SDK. Se cae el requisito de `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`/`BEDROCK_MODEL_ID`. |
