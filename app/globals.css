@@ -1,61 +1,82 @@
 @import "tailwindcss";
 
-
+/* ============================================================
+   SAPUCAÍ — DESIGN SYSTEM TOKENS
+   Dirección visual: "El Estandarte" — seed 852e285a
+   Congelado después de S1L. No editar sin acuerdo del equipo.
+   ============================================================ */
 
 :root {
-  /* Sapucái Colors */
+  /* --- Colores de campo --- */
+  --indigo-campo: #17264A;
   --indigo-nocturno: #0D1730;
-  --azul-yaguarete: #1A365D;
-  --celeste-parana: #E0F2FE;
-  --tierra-colorada: #9B2C2C;
-  --dorado-lapacho: #D97706;
-  --blanco-niveo: #FFFFFF;
 
-  /* Theme mappings */
+  /* --- Ornamento --- */
+  --oro-filete: #C89A3C;
+
+  /* --- Tintas de postura (solo para datos, nunca fondo) --- */
+  --verde-bandera: #1E6B45;
+  --cochinilla: #A82418;
+  --gris-pizarra: #77808F;
+
+  /* --- Neutros de lienzo --- */
+  --lienzo: #EFEBE2;
+  --lienzo-hueso: #F7F5F0;
+  --tinta: #14181F;
+  --tinta-tenue: #5A6472;
+  --hilo: #D6CFC0;
+  --blanco-cosido: #FBFAF7;
+
+  /* --- Motion tokens --- */
+  --ease-tela: cubic-bezier(.2, .8, .2, 1);
+  --dur-atar: 320ms;
+  --dur-sello: 420ms;
+  --dur-fade: 200ms;
+
+  /* --- Radius --- */
+  --radius-base: 2px;
+
+  /* --- Shadcn semantic (preservado) --- */
   --background: var(--indigo-nocturno);
-  --foreground: var(--blanco-niveo);
-  
-  --card: var(--indigo-nocturno);
-  --card-foreground: var(--blanco-niveo);
-  
+  --foreground: var(--blanco-cosido);
+  --card: var(--indigo-campo);
+  --card-foreground: var(--blanco-cosido);
   --popover: var(--indigo-nocturno);
-  --popover-foreground: var(--blanco-niveo);
-  
-  --primary: var(--azul-yaguarete);
-  --primary-foreground: var(--blanco-niveo);
-  
-  --secondary: var(--celeste-parana);
-  --secondary-foreground: var(--indigo-nocturno);
-  
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  
-  --accent: var(--celeste-parana);
+  --popover-foreground: var(--blanco-cosido);
+  --primary: var(--blanco-cosido);
+  --primary-foreground: var(--indigo-nocturno);
+  --secondary: var(--indigo-campo);
+  --secondary-foreground: var(--blanco-cosido);
+  --muted: #1a2540;
+  --muted-foreground: var(--gris-pizarra);
+  --accent: var(--oro-filete);
   --accent-foreground: var(--indigo-nocturno);
-  
-  --destructive: var(--tierra-colorada);
-  --destructive-foreground: var(--blanco-niveo);
-  
-  --border: var(--azul-yaguarete);
-  --input: var(--azul-yaguarete);
-  --ring: var(--celeste-parana);
-
-  --radius: 0.5rem;
+  --destructive: var(--cochinilla);
+  --destructive-foreground: var(--blanco-cosido);
+  --border: rgba(200, 154, 60, 0.3);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: var(--oro-filete);
+  --radius: 2px;
 }
 
 @theme inline {
+  /* Colores directos */
+  --color-indigo-campo: var(--indigo-campo);
+  --color-indigo-nocturno: var(--indigo-nocturno);
+  --color-oro-filete: var(--oro-filete);
+  --color-verde-bandera: var(--verde-bandera);
+  --color-cochinilla: var(--cochinilla);
+  --color-gris-pizarra: var(--gris-pizarra);
+  --color-lienzo: var(--lienzo);
+  --color-lienzo-hueso: var(--lienzo-hueso);
+  --color-tinta: var(--tinta);
+  --color-tinta-tenue: var(--tinta-tenue);
+  --color-hilo: var(--hilo);
+  --color-blanco-cosido: var(--blanco-cosido);
+
+  /* Semánticos para shadcn */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  
-  /* Colors */
-  --color-indigo-nocturno: var(--indigo-nocturno);
-  --color-azul-yaguarete: var(--azul-yaguarete);
-  --color-celeste-parana: var(--celeste-parana);
-  --color-tierra-colorada: var(--tierra-colorada);
-  --color-dorado-lapacho: var(--dorado-lapacho);
-  --color-blanco-niveo: var(--blanco-niveo);
-  
-  /* Semantic */
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -73,21 +94,159 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  
-  /* Typography */
-  --font-sans: var(--font-body);
-  --font-display: var(--font-display);
 
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+  /* Tipografía */
+  --font-sans: var(--font-body, system-ui, sans-serif);
+  --font-display: var(--font-display, system-ui, sans-serif);
+
+  /* Radio */
+  --radius-base: var(--radius-base);
+  --radius-lg: var(--radius-base);
+  --radius-md: var(--radius-base);
+  --radius-sm: var(--radius-base);
+
+  /* Motion */
+  --ease-tela: var(--ease-tela);
+  --dur-atar: var(--dur-atar);
+  --dur-sello: var(--dur-sello);
+  --dur-fade: var(--dur-fade);
 }
 
+/* ============================================================
+   ROLES TIPOGRÁFICOS
+   Nadie escribe tamaños a mano; usa estas clases.
+   ============================================================ */
+
+@layer utilities {
+  /* Display — Archivo 700 condensada, un único grito por pantalla */
+  .t-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-variation-settings: 'wdth' 75;
+    font-size: clamp(2rem, 9vw, 3.5rem);
+    line-height: 0.95;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* Headline — Archivo 600, títulos de sección y estandartes en el feed */
+  .t-headline {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-variation-settings: 'wdth' 85;
+    font-size: 1.5rem;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+  }
+
+  /* Title — Libre Franklin 600, títulos dentro de paneles de lienzo */
+  .t-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    line-height: 1.35;
+  }
+
+  /* Body — Libre Franklin 400, texto de lectura; mínimo 16px en el ciudadano */
+  .t-body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-ch: 68;
+  }
+
+  /* Label — Archivo 600 caps, insignias y etiquetas cortas */
+  .t-label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* Data — Libre Franklin 600 tabular, números que cambian o se comparan */
+  .t-data {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Panel de lienzo: borde cosido a la izquierda ---- */
+  .panel-lienzo {
+    background-color: var(--lienzo);
+    color: var(--tinta);
+    border-left: 3px solid var(--indigo-campo);
+    border-radius: var(--radius-base);
+    padding: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .panel-lienzo {
+      padding: 1.5rem;
+    }
+  }
+
+  /* ---- Banda de izada: 8px + dos ojales ---- */
+  .banda-izada {
+    height: 8px;
+    background-color: var(--indigo-nocturno);
+    border-bottom: 1px solid var(--oro-filete);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .banda-izada::before,
+  .banda-izada::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: var(--oro-filete);
+  }
+
+  .banda-izada::before { left: 24px; }
+  .banda-izada::after  { left: 36px; }
+
+  /* ---- Aro de foco (oro filete, 1px) ---- */
+  .focus-visible\:ring-oro:focus-visible {
+    outline: 1px solid var(--oro-filete);
+    outline-offset: 2px;
+  }
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    box-sizing: border-box;
   }
+
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--indigo-nocturno);
+    color: var(--blanco-cosido);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Focus ring global — oro filete */
+  :focus-visible {
+    outline: 1px solid var(--oro-filete);
+    outline-offset: 2px;
+  }
+
+  /* Sin sombras de caja en superficies */
+  * {
+    box-shadow: none !important;
+  }
+
+  /* Excepción permitida: línea dura sin blur para barra fija */
+  .shadow-barra-fija {
+    box-shadow: 0 -1px 0 var(--oro-filete) !important;
   }
 }
