@@ -135,14 +135,14 @@ cambia en silencio en tu rama.
 │ · Realtime    │                                  │ · agrupar argumentos│
 └───────────────┘                                  │ · responder dudas  │
                                                    └────────────────────┘
-                              DEPLOY: AWS Amplify Hosting
+                              DEPLOY: Vercel
 ```
 
 ### 6.2 Por qué cada pieza
 
 - **Next.js App Router, un solo servicio.** No hay backend separado. Las Server Actions escriben
   en Supabase y llaman a AWS y a Gemini con las credenciales del servidor. Nada de claves de AWS ni
-  la API key de Gemini en el browser, nunca. Un solo deploy en Amplify, cero CORS, cero coordinación
+  la API key de Gemini en el browser, nunca. Un solo deploy en Vercel, cero CORS, cero coordinación
   entre repos.
 
 - **Supabase.** Es Postgres, igual que el RDS de la consigna, así que el esquema es portable.
@@ -440,3 +440,4 @@ Cada cambio de rumbo se anota acá, con fecha y motivo. Esto es la memoria del p
 | 2026-08-01 | **Gemini reemplaza a Amazon Transcribe** para audio→texto | Una sola llamada HTTP con el audio como entrada multimodal, sin job asíncrono ni permisos IAM extra. Transcribe queda descartado. Bedrock (Claude) sigue haciendo las otras cuatro tareas. |
 | 2026-08-01 | **⚠️ Propuesta pendiente de confirmar con el equipo:** sacar Supabase y Bedrock del alcance; el backend queda como mock data de front + Gemini haciendo las cinco tareas de IA sobre esos datos ficticios | Simplifica el deploy en Amplify (sin RDS/DB real que conectar, sin rol IAM para Bedrock). Contradice las reglas §6.2/§8 de este documento (Bedrock para resumir/categorizar/moderar/agrupar/responder) — **falta que el equipo lo valide y se reescriban §5, §6, §8 y §13 si se confirma.** Anotado acá para no perder la decisión mientras se configura el deploy. |
 | 2026-08-01 | **Dirección visual "El Estandarte" queda reemplazada por "El Puente"**, documentada en [DESIGN.md](DESIGN.md) | El equipo proveyó `public/prototype.jpeg` (splash/login: arco en degradé celeste→índigo, fondo blanco, Capitolio ilustrado, botones en píldora con sombra) como la dirección real a seguir. Confirmado explícitamente por el usuario como reemplazo total, no como pantalla adicional. Los nombres de las variables CSS en `app/globals.css` se mantuvieron (`--indigo-campo`, `--oro-filete`, `--lienzo`, etc.) para no romper el código ya escrito por los dos agentes que estaban implementando el plan de 30 min bajo la dirección anterior — solo cambiaron los valores (colores, radio 2px→20px, sombra ahora permitida). Pendiente: repasar a mano la geometría dura construida contra "El Estandarte" (Campo Dividido de bordes rectos, panel de diputado sin sombra por diseño, banda de izada) que el cambio de tokens por sí solo no corrige. |
+| 2026-08-01 | **Deploy: Vercel reemplaza a AWS Amplify.** Se borró `amplify.yml`. | El equipo pidió mergear `front` a `main` y desplegar ahí. Vercel es zero-config para Next.js (detecta `pnpm-lock.yaml` solo) y evita el problema del §7 (RDS solo accesible desde la oficina de Devlights) porque de todas formas el alcance quedó como mock data + Gemini, sin Supabase ni RDS real conectado. Variables de entorno que de verdad usa el código hoy: `GEMINI_API_KEY`, `GEMINI_MODEL_ID`, `NEXT_PUBLIC_MOCK` — las de Supabase/AWS/Bedrock de §13 nunca se conectaron a código real. |
